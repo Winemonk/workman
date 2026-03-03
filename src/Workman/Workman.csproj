@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>wm@64.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Apps\Resources\CheckCircle32.png" />
+    <None Remove="Apps\Resources\CloseCircleRed32.png" />
+    <None Remove="Apps\Resources\Delete32.png" />
+    <None Remove="Apps\Resources\DownCircle32.png" />
+    <None Remove="Apps\Resources\Edit32.png" />
+    <None Remove="Apps\Resources\FolderOpen32.png" />
+    <None Remove="Apps\Resources\LeftCircle32.png" />
+    <None Remove="Apps\Resources\MinusCircle32.png" />
+    <None Remove="Apps\Resources\RightCircle32.png" />
+    <None Remove="Apps\Resources\Setting32.png" />
+    <None Remove="Apps\Resources\UpCircle32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wm@64.ico" />
+  </ItemGroup>
+	
+  
+  <ItemGroup>
+	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="DryIoc.Microsoft.DependencyInjection" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Prism.DryIoc" Version="9.0.537" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
+  	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.23" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Hearth.Prism.Toolkit\Hearth.Prism.Toolkit\Hearth.Prism.Toolkit.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="Apps\Resources\CheckCircle32.png" />
+    <Resource Include="Apps\Resources\CloseCircle32.png" />
+    <Resource Include="Apps\Resources\CloseCircleRed32.png" />
+    <Resource Include="Apps\Resources\Delete32.png" />
+    <Resource Include="Apps\Resources\DownCircle32.png" />
+    <Resource Include="Apps\Resources\Edit32.png" />
+    <Resource Include="Apps\Resources\FolderOpen32.png" />
+    <Resource Include="Apps\Resources\LeftCircle32.png" />
+    <Resource Include="Apps\Resources\MinusCircle32.png" />
+    <Resource Include="Apps\Resources\RightCircle32.png" />
+    <Resource Include="Apps\Resources\Setting32.png" />
+    <Resource Include="Apps\Resources\UpCircle32.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="wm.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="Workman.Apps.Views.ExportWorkLogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Workman.Apps.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="200"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <Label Content="导出日志：" />
+            <DatePicker
+                Background="Transparent"
+                BorderThickness="0"
+                DisplayDateEnd="{Binding EndDate}"
+                SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedDateFormat="Long" />
+            <Label Content="至" />
+            <DatePicker
+                Background="Transparent"
+                BorderThickness="0"
+                DisplayDateStart="{Binding StartDate}"
+                SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedDateFormat="Long" />
+            <Label Content="输出目录：" />
+            <DockPanel>
+                <Button
+                    Margin="2"
+                    Command="{Binding SelectOutputCommand}"
+                    DockPanel.Dock="Right">
+                    <Image
+                        Width="12"
+                        Height="12"
+                        Source="/Apps/Resources/FolderOpen32.png" />
+                </Button>
+                <TextBox
+                    Margin="2"
+                    IsReadOnly="True"
+                    Text="{Binding Output}" />
+            </DockPanel>
+            <StackPanel
+                Margin="3"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button Command="{Binding ConfirmCommand}" Content="确 认" />
+                <Button Command="{Binding CancelCommand}" Content="取 消" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

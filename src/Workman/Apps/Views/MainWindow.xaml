@@ -1,0 +1,211 @@
+﻿<Window
+    x:Class="Workman.Apps.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:Workman.Apps.Helpers"
+    xmlns:local="clr-namespace:Workman.Apps.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="Workman"
+    MaxHeight="320"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    AllowsTransparency="True"
+    Background="#80FFFFFF"
+    ShowInTaskbar="False"
+    SizeChanged="Window_SizeChanged"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="Manual"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type DatePicker}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Style.Resources>
+                    <Style TargetType="{x:Type DatePickerTextBox}">
+                        <Setter Property="IsReadOnly" Value="True" />
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style x:Key="ToolMenuButton" TargetType="{x:Type Button}">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Width" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label
+            Content="Workman"
+            FontSize="18"
+            FontWeight="Bold"
+            Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button
+                Padding="3"
+                VerticalAlignment="Center"
+                Command="{Binding AppSettingCommand}"
+                Cursor="Hand"
+                Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Image
+                    Width="14"
+                    Height="14"
+                    Source="/Apps/Resources/Setting32.png" />
+            </Button>
+            <!--<Button
+                Padding="3"
+                VerticalAlignment="Center"
+                Command="{Binding ExitCommand}"
+                Cursor="Hand"
+                Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Image
+                    Width="14"
+                    Height="14"
+                    Source="/Apps/Resources/CloseCircle64.png" />
+            </Button>-->
+            <ToggleButton IsChecked="{Binding IsPin}">
+                <Image Width="14" Height="14">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="/Apps/Resources/RightCircle32.png" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPin}" Value="false">
+                                    <Setter Property="Source" Value="/Apps/Resources/LeftCircle32.png" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </ToggleButton>
+        </StackPanel>
+        <Border
+            Grid.Row="1"
+            Width="300"
+            Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel Margin="3" Orientation="Vertical">
+                <DatePicker
+                    Background="Transparent"
+                    BorderThickness="0"
+                    SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    SelectedDateFormat="Long" />
+                <UniformGrid Rows="2">
+                    <Button Command="{Binding PreviousDayCommand}" Content="前一天" />
+                    <Button Command="{Binding NextDayCommand}" Content="后一天" />
+                    <Button Command="{Binding TodayCommand}" Content="当前" />
+                    <Button Command="{Binding AddLogCommand}" Content="添加日志" />
+                    <Button Command="{Binding ExportLogCommand}" Content="导出日志" />
+                    <Button Command="{Binding ProjectManageCommand}" Content="项目管理" />
+                </UniformGrid>
+                <DataGrid
+                    MinHeight="60"
+                    d:ItemsSource="{d:SampleData}"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding WorkLogs}"
+                    Visibility="{Binding ShowLog, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <DataGrid.Resources>
+                        <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
+                    </DataGrid.Resources>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Padding" Value="5,1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding OrderId}" Header="序号">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ProjectName}" Header="项目">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="内容">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Margin" Value="5,2" />
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="耗时">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn
+                            CanUserResize="False"
+                            CanUserSort="False"
+                            Header="操作">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Button
+                                            Margin="3,1"
+                                            Command="{Binding DataContext.EditLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding .}"
+                                            Cursor="Hand">
+                                            <Image
+                                                Width="14"
+                                                Height="14"
+                                                Source="/Apps/Resources/Edit32.png" />
+                                        </Button>
+                                        <Button
+                                            Margin="3,1"
+                                            Command="{Binding DataContext.DeleteLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding .}"
+                                            Cursor="Hand">
+                                            <Image
+                                                Width="14"
+                                                Height="14"
+                                                Source="/Apps/Resources/Delete32.png" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Command="{Binding ShowWorkLogCommand}">
+                    <Image Width="14" Height="14">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Source" Value="/Apps/Resources/UpCircle32.png" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowLog}" Value="false">
+                                        <Setter Property="Source" Value="/Apps/Resources/DownCircle32.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
