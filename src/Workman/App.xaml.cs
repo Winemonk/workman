@@ -15,6 +15,35 @@ namespace Workman
     /// </summary>
     public partial class App : PrismApplication
     {
+        private static Mutex _MUTEX = null!;
+        private const string _MUTEX_NAME = "HEARTH_WORKMAN";
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // 尝试获取互斥体
+            bool createdNew;
+            try
+            {
+                _MUTEX = new Mutex(true, _MUTEX_NAME, out createdNew);
+            }
+            catch (AbandonedMutexException)
+            {
+                // 如果上一个实例异常终止，Mutex 可能被遗弃，但我们仍可视为已有实例
+                createdNew = false;
+            }
+
+            if (!createdNew)
+            {
+                // 已有实例在运行，激活已有窗口并退出当前进程
+                //ActivatePreviousInstance();
+                Shutdown();
+                return;
+            }
+
+            // 正常启动应用程序
+            base.OnStartup(e);
+        }
+
         protected override Window CreateShell()
         {
             Container.RegisterViewsFromAssembly(Assembly.GetExecutingAssembly());

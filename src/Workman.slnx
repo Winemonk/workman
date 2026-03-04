@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="../Hearth.Prism.Toolkit/Hearth.Prism.Toolkit/Hearth.Prism.Toolkit.csproj" />
+  <Project Path="Hearth.Prism.Toolkit/Hearth.Prism.Toolkit.csproj" />
   <Project Path="Workman/Workman.csproj" />
 </Solution>

@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
     Title="Workman"
     MaxHeight="320"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -37,6 +38,7 @@
                 <Setter Property="Margin" Value="2" />
                 <Setter Property="Width" Value="20" />
             </Style>
+            <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10">
@@ -263,5 +265,35 @@
                 </Button>
             </StackPanel>
         </Border>
+        <tb:TaskbarIcon
+            IconSource="/Apps/Resources/wm@64.ico"
+            LeftClickCommand="{Binding ActiveCommand}"
+            MenuActivation="RightClick"
+            PopupActivation="LeftClick"
+            ToolTipText="Workman"
+            Visibility="Visible">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding DataContext.TaskBarActiveCommand, Source={StaticResource BindingProxy}}" Header="打开主界面">
+                        <MenuItem.Icon>
+                            <Image Source="/Apps/Resources/home32.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DataContext.TaskBarAppSettingCommand, Source={StaticResource BindingProxy}}" Header="程序设置">
+                        <MenuItem.Icon>
+                            <Image Source="/Apps/Resources/setting32.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Command="{Binding DataContext.TaskBarExitCommand, Source={StaticResource BindingProxy}}"
+                        Foreground="Red"
+                        Header="退出程序">
+                        <MenuItem.Icon>
+                            <Image Source="/Apps/Resources/close32.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
     </Grid>
 </Window>

@@ -13,6 +13,8 @@ namespace Workman.Apps.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IRepository<Project> _projectRepository;
         private readonly IRepository<WorkLog> _workLogRepository;
+        private bool _taskBarSettingExecuting;
+        private bool _taskBarExitExecuting;
 
         public MainWindowViewModel(IDialogService dialogService,
                                    IRepository<Project> projectRepository,
@@ -33,8 +35,10 @@ namespace Workman.Apps.ViewModels
         [ObservableProperty]
         private bool _showLog;
 
+
         [ObservableProperty]
         private ObservableCollection<WorkLogVO> _workLogs;
+
 
         [RelayCommand]
         private void ShowWorkLog()
@@ -127,6 +131,59 @@ namespace Workman.Apps.ViewModels
                 { "log", workLog }
             });
         }
+
+        private void TaskBarCommandExecuteProxy(ref bool isExecutingRef, Action action)
+        {
+            if (isExecutingRef)
+            {
+                return;
+            }
+            try
+            {
+                isExecutingRef = true;
+                action?.Invoke();
+            }
+            finally
+            {
+                isExecutingRef = false;
+            }
+        }
+
+        [RelayCommand]
+        private void TaskBarActive()
+        {
+            Application.Current.MainWindow.Activate();
+            IsPin = true;
+        }
+
+        [RelayCommand]
+        private void TaskBarAppSetting()
+        {
+            TaskBarCommandExecuteProxy(ref _taskBarSettingExecuting, () =>
+            {
+                Application.Current.MainWindow.Activate();
+                IsPin = true;
+                _dialogService.ShowDialog("AppSettingView");
+            });
+        }
+
+        [RelayCommand]
+        private void TaskBarExit()
+        {
+            TaskBarCommandExecuteProxy(ref _taskBarExitExecuting, () =>
+            {
+                Application.Current.MainWindow.Activate();
+                MessageBoxResult messageBoxResult = MessageBox.Show("是否退出应用程序？",
+                                                                "提示",
+                                                                MessageBoxButton.YesNo,
+                                                                MessageBoxImage.Question);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    Environment.Exit(0);
+                }
+            });
+        }
+
 
         partial void OnIsPinChanged(bool value)
         {
