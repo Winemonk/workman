@@ -38,9 +38,9 @@
                                     CommandParameter="{Binding .}"
                                     Cursor="Hand">
                                     <Image
-                                        Width="14"
-                                        Height="14"
-                                        Source="/Apps/Resources/Delete32.png" />
+                                        Width="16"
+                                        Height="16"
+                                        Source="/Apps/Resources/delete32.png" />
                                 </Button>
                             </StackPanel>
                         </DockPanel>

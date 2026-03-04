@@ -11,7 +11,7 @@
     MaxHeight="320"
     prism:ViewModelLocator.AutoWireViewModel="True"
     AllowsTransparency="True"
-    Background="#80FFFFFF"
+    Background="#aaFFFFFF"
     ShowInTaskbar="False"
     SizeChanged="Window_SizeChanged"
     SizeToContent="WidthAndHeight"
@@ -57,9 +57,9 @@
                 Cursor="Hand"
                 Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Image
-                    Width="14"
-                    Height="14"
-                    Source="/Apps/Resources/Setting32.png" />
+                    Width="16"
+                    Height="16"
+                    Source="/Apps/Resources/setting32.png" />
             </Button>
             <!--<Button
                 Padding="3"
@@ -73,13 +73,13 @@
                     Source="/Apps/Resources/CloseCircle64.png" />
             </Button>-->
             <ToggleButton IsChecked="{Binding IsPin}">
-                <Image Width="14" Height="14">
+                <Image Width="16" Height="16">
                     <Image.Style>
                         <Style TargetType="Image">
-                            <Setter Property="Source" Value="/Apps/Resources/RightCircle32.png" />
+                            <Setter Property="Source" Value="/Apps/Resources/dock_screen32.png" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsPin}" Value="false">
-                                    <Setter Property="Source" Value="/Apps/Resources/LeftCircle32.png" />
+                                    <Setter Property="Source" Value="/Apps/Resources/home32.png" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -98,12 +98,66 @@
                     SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     SelectedDateFormat="Long" />
                 <UniformGrid Rows="2">
-                    <Button Command="{Binding PreviousDayCommand}" Content="前一天" />
-                    <Button Command="{Binding NextDayCommand}" Content="后一天" />
-                    <Button Command="{Binding TodayCommand}" Content="当前" />
-                    <Button Command="{Binding AddLogCommand}" Content="添加日志" />
-                    <Button Command="{Binding ExportLogCommand}" Content="导出日志" />
-                    <Button Command="{Binding ProjectManageCommand}" Content="项目管理" />
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding PreviousDayCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/back32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="前一天" />
+                        </DockPanel>
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding NextDayCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/next32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="后一天" />
+                        </DockPanel>
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding TodayCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/current32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="今  天" />
+                        </DockPanel>
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding AddLogCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/add32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="添加日志" />
+                        </DockPanel>
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding ExportLogCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/export32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="导出日志" />
+                        </DockPanel>
+                    </Button>
+                    <Button HorizontalContentAlignment="Stretch" Command="{Binding ProjectManageCommand}">
+                        <DockPanel>
+                            <Image
+                                Width="16"
+                                Height="16"
+                                Margin="3,0"
+                                Source="/Apps/Resources/list32.png" />
+                            <TextBlock HorizontalAlignment="Center" Text="项目管理" />
+                        </DockPanel>
+                    </Button>
                 </UniformGrid>
                 <DataGrid
                     MinHeight="60"
@@ -167,23 +221,25 @@
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                         <Button
                                             Margin="3,1"
+                                            VerticalAlignment="Center"
                                             Command="{Binding DataContext.EditLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                                             CommandParameter="{Binding .}"
                                             Cursor="Hand">
                                             <Image
-                                                Width="14"
-                                                Height="14"
-                                                Source="/Apps/Resources/Edit32.png" />
+                                                Width="16"
+                                                Height="16"
+                                                Source="/Apps/Resources/edit32.png" />
                                         </Button>
                                         <Button
                                             Margin="3,1"
+                                            VerticalAlignment="Center"
                                             Command="{Binding DataContext.DeleteLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
                                             CommandParameter="{Binding .}"
                                             Cursor="Hand">
                                             <Image
-                                                Width="14"
-                                                Height="14"
-                                                Source="/Apps/Resources/Delete32.png" />
+                                                Width="16"
+                                                Height="16"
+                                                Source="/Apps/Resources/delete32.png" />
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -195,10 +251,10 @@
                     <Image Width="14" Height="14">
                         <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="/Apps/Resources/UpCircle32.png" />
+                                <Setter Property="Source" Value="/Apps/Resources/upward32.png" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ShowLog}" Value="false">
-                                        <Setter Property="Source" Value="/Apps/Resources/DownCircle32.png" />
+                                        <Setter Property="Source" Value="/Apps/Resources/down32.png" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

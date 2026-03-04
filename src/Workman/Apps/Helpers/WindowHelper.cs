@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using DryIoc.ImTools;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -42,6 +43,25 @@ namespace Workman.Apps.Helpers
 
         [DllImport("user32.dll")]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        /// <summary>
+        /// 将窗口停靠至桌面右上角
+        /// </summary>
+        public static void DockWindowToScreenRightTop(Window window, bool onlyMainScreen)
+        {
+            if (onlyMainScreen)
+            {
+                window.Left = SystemParameters.WorkArea.Width - window.ActualWidth;
+                window.Top = 0;
+                return;
+            }
+            // 获取虚拟屏幕（所有显示器组合成的矩形）的总宽度
+            double virtualWidth = SystemParameters.VirtualScreenWidth;
+            double virtualLeft = SystemParameters.VirtualScreenLeft;
+            // 理论上的最右侧坐标
+            window.Left = virtualLeft + virtualWidth - window.ActualWidth;
+            window.Top = SystemParameters.VirtualScreenTop;
+        }
 
         /// <summary>
         /// 挂载钩子，防止窗口状态被系统改变（如 Win+D 触发的排序改变）

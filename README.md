@@ -8,29 +8,29 @@ wpf + dotnet8 + prism + sqlite + dryioc
 
 ## 界面
 
-![image-20260303170910400](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031709446.png)
+![image-20260304113202203](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041132253.png)
 
-![image-20260303170827904](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031708011.png)
+![image-20260304113250649](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041132692.png)
 
 ## 桌面效果
 
-![image-20260303171350905](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031713274.png)
+![image-20260304113054153](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041130635.png)
 
-![image-20260303171443643](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031714021.png)
+![image-20260304113123937](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041131388.png)
 
-![image-20260303171505910](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031715273.png)
+![image-20260304113012420](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041130915.png)
 
 ## 项目管理
 
-![image-20260303171028730](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031710764.png)
+![image-20260304113336222](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041133264.png)
 
-![image-20260303171041939](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031710974.png)
+![image-20260304113355299](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041133342.png)
 
 ## 新建日志
 
-![image-20260303170948759](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031709791.png)
+![image-20260304113420384](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041134424.png)
 
 ## 设置
 
-![image-20260303170929479](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603031709507.png)
+![image-20260304113438655](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041134696.png)
 

@@ -15,7 +15,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <ScrollViewer
-            Height="150"
+            Height="100"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
@@ -23,16 +23,20 @@
                     <Label Content="开机启动：" />
                     <RibbonCheckBox IsChecked="{Binding Autostart}" />
                 </DockPanel>
+                <DockPanel Margin="3">
+                    <Label Content="停靠主屏：" />
+                    <RibbonCheckBox IsChecked="{Binding DockOnlyMainScreen}" />
+                </DockPanel>
             </StackPanel>
         </ScrollViewer>
         <UniformGrid Grid.Row="1" Rows="1">
             <Button Command="{Binding ExitCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image
-                        Width="14"
-                        Height="14"
+                        Width="16"
+                        Height="16"
                         Margin="2"
-                        Source="/Apps/Resources/CloseCircleRed32.png" />
+                        Source="/Apps/Resources/close32.png" />
                     <TextBlock
                         Margin="2"
                         Foreground="Red"
@@ -42,10 +46,10 @@
             <Button Command="{Binding CancelCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image
-                        Width="14"
-                        Height="14"
+                        Width="16"
+                        Height="16"
                         Margin="2"
-                        Source="/Apps/Resources/CheckCircle32.png" />
+                        Source="/Apps/Resources/save32.png" />
                     <TextBlock Margin="2" Text="保存并关闭设置" />
                 </StackPanel>
             </Button>

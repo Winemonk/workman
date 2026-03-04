@@ -16,7 +16,7 @@
             <Border
                 Margin="10"
                 Padding="3"
-                Background="White"
+                Background="#bbffffff"
                 CornerRadius="5">
                 <Border.Effect>
                     <DropShadowEffect

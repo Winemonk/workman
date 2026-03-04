@@ -1,7 +1,8 @@
 ﻿namespace Workman.Apps.Configs
 {
-    internal class AppSettings
+    public class AppSettings
     {
         public bool Autostart { get; set; }
+        public bool DockOnlyMainScreen { get; set; }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.Options;
+using System.Windows;
 using System.Windows.Interop;
+using Workman.Apps.Configs;
 using Workman.Apps.Helpers;
 
 namespace Workman.Apps.Views
@@ -9,20 +11,26 @@ namespace Workman.Apps.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IOptionsMonitor<AppSettings> _appSettings;
+        public MainWindow(IOptionsMonitor<AppSettings> appSettings)
         {
             InitializeComponent();
+            _appSettings = appSettings;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-
+            AppSettings appSettings = _appSettings.CurrentValue;
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
 
             // 1. 定位到右上角
-            this.Left = SystemParameters.WorkArea.Width - this.Width;
-            this.Top = 0;
+            WindowHelper.DockWindowToScreenRightTop(this, appSettings.DockOnlyMainScreen);
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (s, e) =>
+            {
+                // 重新执行定位逻辑
+                WindowHelper.DockWindowToScreenRightTop(this,appSettings.DockOnlyMainScreen);
+            };
 
             // 2. 设置为 ToolWindow (不在 Alt+Tab 显示)
             WindowHelper.SetWindowToolStyle(this);
@@ -41,8 +49,8 @@ namespace Workman.Apps.Views
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // 1. 定位到右上角
-            this.Left = SystemParameters.WorkArea.Width - this.ActualWidth;
-            this.Top = 0;
+            AppSettings appSettings = _appSettings.CurrentValue;
+            WindowHelper.DockWindowToScreenRightTop(this, appSettings.DockOnlyMainScreen);
         }
     }
 }

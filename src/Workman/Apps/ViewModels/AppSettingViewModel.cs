@@ -34,6 +34,9 @@ namespace Workman.Apps.ViewModels
         [ObservableProperty]
         private bool _autostart;
 
+        [ObservableProperty]
+        private bool _dockOnlyMainScreen;
+
         public DialogCloseListener RequestClose { get; }
 
         [RelayCommand]
@@ -68,6 +71,7 @@ namespace Workman.Apps.ViewModels
             AppSettings appSettings = new AppSettings
             {
                 Autostart = Autostart,
+                DockOnlyMainScreen = DockOnlyMainScreen,
             };
             string json = JsonSerializer.Serialize(appSettings, _JSON_SERIALIZER_OPTIONS);
             File.WriteAllText("appsettings.json", json);
@@ -85,9 +89,11 @@ namespace Workman.Apps.ViewModels
         {
             AppSettings appSettings = _appSettings.CurrentValue;
             Autostart = appSettings.Autostart;
+            DockOnlyMainScreen = appSettings.DockOnlyMainScreen;
             _settingListener = _appSettings.OnChange(s =>
             {
                 Autostart = appSettings.Autostart;
+                DockOnlyMainScreen = appSettings.DockOnlyMainScreen;
             });
         }
     }

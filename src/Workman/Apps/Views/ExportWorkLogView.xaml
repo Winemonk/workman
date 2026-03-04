@@ -32,12 +32,13 @@
                     Command="{Binding SelectOutputCommand}"
                     DockPanel.Dock="Right">
                     <Image
-                        Width="12"
-                        Height="12"
-                        Source="/Apps/Resources/FolderOpen32.png" />
+                        Width="16"
+                        Height="16"
+                        Source="/Apps/Resources/folder32.png" />
                 </Button>
                 <TextBox
                     Margin="2"
+                    VerticalContentAlignment="Center"
                     IsReadOnly="True"
                     Text="{Binding Output}" />
             </DockPanel>

@@ -10,17 +10,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Apps\Resources\bak\**" />
+    <EmbeddedResource Remove="Apps\Resources\bak\**" />
+    <None Remove="Apps\Resources\bak\**" />
+    <Page Remove="Apps\Resources\bak\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Apps\Resources\add32.png" />
+    <None Remove="Apps\Resources\back32.png" />
     <None Remove="Apps\Resources\CheckCircle32.png" />
+    <None Remove="Apps\Resources\close32.png" />
     <None Remove="Apps\Resources\CloseCircleRed32.png" />
-    <None Remove="Apps\Resources\Delete32.png" />
+    <None Remove="Apps\Resources\current32.png" />
+    <None Remove="Apps\Resources\delete32.png" />
+    <None Remove="Apps\Resources\down32.png" />
     <None Remove="Apps\Resources\DownCircle32.png" />
-    <None Remove="Apps\Resources\Edit32.png" />
+    <None Remove="Apps\Resources\edit32.png" />
+    <None Remove="Apps\Resources\export32.png" />
+    <None Remove="Apps\Resources\folder32.png" />
     <None Remove="Apps\Resources\FolderOpen32.png" />
+    <None Remove="Apps\Resources\home32.png" />
     <None Remove="Apps\Resources\LeftCircle32.png" />
+    <None Remove="Apps\Resources\list32.png" />
     <None Remove="Apps\Resources\MinusCircle32.png" />
+    <None Remove="Apps\Resources\next32.png" />
     <None Remove="Apps\Resources\RightCircle32.png" />
-    <None Remove="Apps\Resources\Setting32.png" />
+    <None Remove="Apps\Resources\save32.png" />
+    <None Remove="Apps\Resources\setting32.png" />
     <None Remove="Apps\Resources\UpCircle32.png" />
+    <None Remove="Apps\Resources\upward32.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,24 +68,28 @@
 
 
   <ItemGroup>
-    <Resource Include="Apps\Resources\CheckCircle32.png" />
-    <Resource Include="Apps\Resources\CloseCircle32.png" />
-    <Resource Include="Apps\Resources\CloseCircleRed32.png" />
-    <Resource Include="Apps\Resources\Delete32.png" />
-    <Resource Include="Apps\Resources\DownCircle32.png" />
-    <Resource Include="Apps\Resources\Edit32.png" />
-    <Resource Include="Apps\Resources\FolderOpen32.png" />
-    <Resource Include="Apps\Resources\LeftCircle32.png" />
-    <Resource Include="Apps\Resources\MinusCircle32.png" />
-    <Resource Include="Apps\Resources\RightCircle32.png" />
-    <Resource Include="Apps\Resources\Setting32.png" />
-    <Resource Include="Apps\Resources\UpCircle32.png" />
+    <Resource Include="Apps\Resources\add32.png" />
+    <Resource Include="Apps\Resources\back32.png" />
+    <Resource Include="Apps\Resources\close32.png" />
+    <Resource Include="Apps\Resources\current32.png" />
+    <Resource Include="Apps\Resources\delete32.png" />
+    <Resource Include="Apps\Resources\dock_screen32.png" />
+    <Resource Include="Apps\Resources\down32.png" />
+    <Resource Include="Apps\Resources\edit32.png" />
+    <Resource Include="Apps\Resources\export32.png" />
+    <Resource Include="Apps\Resources\folder32.png" />
+    <Resource Include="Apps\Resources\home32.png" />
+    <Resource Include="Apps\Resources\list32.png" />
+    <Resource Include="Apps\Resources\next32.png" />
+    <Resource Include="Apps\Resources\save32.png" />
+    <Resource Include="Apps\Resources\setting32.png" />
+    <Resource Include="Apps\Resources\upward32.png" />
   </ItemGroup>
 
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="wm.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
