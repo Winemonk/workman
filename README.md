@@ -1,4 +1,4 @@
-![.NET](https://img.shields.io/badge/.NET-8-blue) | ![WPF](https://img.shields.io/badge/UI-WPF-green) | ![License](https://img.shields.io/badge/license-MIT-orange) | ![Stars](https://img.shields.io/github/stars/winemonk/workman)
+![.NET](https://img.shields.io/badge/.NET-8-blue) ![WPF](https://img.shields.io/badge/UI-WPF-green) ![License](https://img.shields.io/badge/license-MIT-orange) ![Stars](https://img.shields.io/github/stars/winemonk/workman)
 
 <div align="center">
 
