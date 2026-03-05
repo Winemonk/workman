@@ -148,15 +148,7 @@ cd workman
 
 ## 核心结构：
 
-View
- ↓
-ViewModel
- ↓
-Service
- ↓
-Repository
- ↓
-SQLite
+View → ViewModel → Service → Repository → SQLite
 
 ## 特点：
 
@@ -188,20 +180,20 @@ SQLite
 
 贡献流程：
 
-1 Fork 项目
-2 创建分支
+1. Fork 项目
+2. 创建分支
     ```bash
     git checkout -b feature/your-feature
     ```
-3 提交代码
+3. 提交代码
     ```bash
     git commit -m "add new feature"
     ```
-4 推送分支
+4. 推送分支
     ```bash
     git push origin feature/your-feature
     ```
-5 创建 Pull Request
+5. 创建 Pull Request
 
 # 📄 License
 
