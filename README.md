@@ -110,9 +110,9 @@
 # 📁 项目结构
 
 workman
- ├─ Workman.Apps              WPF界面&核心业务逻辑实现
- ├─ Workman.Core               实体
- ├─ Workman.Infrastructure   数据访问
+ ├─ Workman.Apps WPF界面&核心业务逻辑实现
+ ├─ Workman.Core 实体
+ ├─ Workman.Infrastructure 数据访问
 
 ---
 
