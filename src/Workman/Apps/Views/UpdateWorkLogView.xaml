@@ -18,7 +18,10 @@
                 ItemsSource="{Binding Projects}"
                 SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="内容：" />
-            <TextBox Margin="3" Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                Margin="3"
+                Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
             <Label Content="耗时：" />
             <TextBox Margin="3" Text="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel

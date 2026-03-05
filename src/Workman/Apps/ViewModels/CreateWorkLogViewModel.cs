@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
+using System.Collections.ObjectModel;
 using System.Windows;
+using Workman.Apps.Entities;
 using Workman.Core.Entities;
 using Workman.Core.Repositories;
 
@@ -22,47 +24,42 @@ namespace Workman.Apps.ViewModels
         }
 
         [ObservableProperty]
-        private Project? _selectedProject;
-
-        [ObservableProperty]
         private List<Project> _projects;
 
         [ObservableProperty]
-        private string _content = string.Empty;
+        private ObservableCollection<CreateWorkLogVO> _workLogs;
 
-        [ObservableProperty]
-        private float _elapsedTime = 1;
+        private Project _memoryProject;
 
         public DialogCloseListener RequestClose { get; }
 
         [RelayCommand]
         private async Task Confirm()
         {
-            if (SelectedProject == null)
+            foreach (CreateWorkLogVO log in WorkLogs)
             {
-                MessageBox.Show("项目不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                if (string.IsNullOrWhiteSpace(log.Content))
+                {
+                    MessageBox.Show($"项：{log.OrderId} 内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (log.ElapsedTime <= 0)
+                {
+                    MessageBox.Show($"项：{log.OrderId} 耗时必须大于0！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
-            if (string.IsNullOrWhiteSpace(Content))
-            {
-                MessageBox.Show("内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (ElapsedTime <= 0)
-            {
-                MessageBox.Show("耗时必须大于0！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            WorkLog workLog = new WorkLog
-            {
-                Content = Content,
-                Date = _dateTime,
-                ElapsedTime = ElapsedTime,
-                ProjectId = SelectedProject.Id,
-            };
 
-            WorkLog? insertedWorkLog = await _workLogRepository.Insert(workLog);
-            if (insertedWorkLog == null)
+            IEnumerable<WorkLog> workLogs = WorkLogs.Select(l => new WorkLog
+            {
+                Content = l.Content,
+                Date = _dateTime,
+                ElapsedTime = l.ElapsedTime,
+                ProjectId = l.Project.Id,
+            });
+
+            IEnumerable<WorkLog> insertedWorkLogs = await _workLogRepository.InsertRange(workLogs);
+            if (!insertedWorkLogs.Any())
             {
                 MessageBox.Show("添加日志失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -95,7 +92,30 @@ namespace Workman.Apps.ViewModels
             }
             IEnumerable<Project> projects = await _projectRepository.QueryRange();
             Projects = projects.ToList();
-            SelectedProject = Projects.LastOrDefault();
+            WorkLogs = new ObservableCollection<CreateWorkLogVO>();
+            WorkLogs.CollectionChanged += WorkLogs_CollectionChanged;
+        }
+
+        private void WorkLogs_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                return;
+            }
+            foreach (CreateWorkLogVO item in e.NewItems ?? Array.Empty<CreateWorkLogVO>())
+            {
+                item.Project = _memoryProject;
+                item.OrderId = WorkLogs.Count;
+                item.ElapsedTime = 1;
+                item.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(CreateWorkLogVO.Project)
+                    && s is CreateWorkLogVO newItem)
+                    {
+                        _memoryProject = newItem.Project;
+                    }
+                };
+            }
         }
     }
 }

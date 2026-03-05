@@ -11,14 +11,17 @@
     Title="Workman"
     MaxHeight="320"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    AllowsTransparency="True"
     Background="#aaFFFFFF"
+    ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeChanged="Window_SizeChanged"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="Manual"
     WindowStyle="None"
     mc:Ignorable="d">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" GlassFrameThickness="-1" />
+    </WindowChrome.WindowChrome>
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type DatePicker}">

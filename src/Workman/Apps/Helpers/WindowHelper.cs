@@ -63,15 +63,6 @@ namespace Workman.Apps.Helpers
             window.Top = SystemParameters.VirtualScreenTop;
         }
 
-        /// <summary>
-        /// 挂载钩子，防止窗口状态被系统改变（如 Win+D 触发的排序改变）
-        /// </summary>
-        public static void SetWindowHook(Window window)
-        {
-            IntPtr hwnd = new WindowInteropHelper(window).Handle;
-            HwndSource source = HwndSource.FromHwnd(hwnd);
-            source.AddHook(WndProc);
-        }
         private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_WINDOWPOSCHANGING)
@@ -104,6 +95,8 @@ namespace Workman.Apps.Helpers
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
             IntPtr progman = FindWindow("Progman", null);
             SetWindowLongPtr(hwnd, GWLP_HWNDPARENT, progman);
+            HwndSource source = HwndSource.FromHwnd(hwnd);
+            source.AddHook(WndProc);
         }
 
         /// <summary>

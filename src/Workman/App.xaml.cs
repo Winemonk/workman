@@ -3,8 +3,12 @@ using GeoAppPackager.Infrastructure;
 using Hearth.Prism.Toolkit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using Workman.Apps.Configs;
 using Workman.Apps.Views;
 
@@ -20,6 +24,13 @@ namespace Workman
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+            var exeDirectory = Path.GetDirectoryName(exePath);
+            if (!string.IsNullOrEmpty(exeDirectory))
+            {
+                Directory.SetCurrentDirectory(exeDirectory);
+            }
+
             // 尝试获取互斥体
             bool createdNew;
             try
@@ -34,12 +45,12 @@ namespace Workman
 
             if (!createdNew)
             {
-                // 已有实例在运行，激活已有窗口并退出当前进程
-                //ActivatePreviousInstance();
+                // 已有实例在运行，退出当前进程
                 Shutdown();
                 return;
             }
-
+            // 禁用硬件加速
+            //RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
             // 正常启动应用程序
             base.OnStartup(e);
         }

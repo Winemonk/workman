@@ -5,27 +5,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    AllowsTransparency="True"
+    Background="Transparent"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner"
     WindowStyle="None"
     mc:Ignorable="d">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" GlassFrameThickness="-1" />
+    </WindowChrome.WindowChrome>
     <Window.Template>
         <ControlTemplate TargetType="Window">
-            <Border
-                Margin="10"
-                Padding="3"
-                Background="#bbffffff"
-                CornerRadius="5">
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Direction="320"
-                        ShadowDepth="5"
-                        Color="#ababab" />
-                </Border.Effect>
-                <ContentPresenter />
+            <Border Padding="10">
+                <Border
+                    Padding="3"
+                    Background="#bbffffff"
+                    CornerRadius="5">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="320"
+                            ShadowDepth="5"
+                            Color="#ababab" />
+                    </Border.Effect>
+                    <ContentPresenter />
+                </Border>
             </Border>
         </ControlTemplate>
     </Window.Template>

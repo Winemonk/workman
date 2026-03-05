@@ -26,11 +26,9 @@ namespace Workman.Apps.Views
 
             // 1. 定位到右上角
             WindowHelper.DockWindowToScreenRightTop(this, appSettings.DockOnlyMainScreen);
-            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (s, e) =>
-            {
-                // 重新执行定位逻辑
-                WindowHelper.DockWindowToScreenRightTop(this,appSettings.DockOnlyMainScreen);
-            };
+            // 重新执行定位逻辑
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += (s, e) 
+                => WindowHelper.DockWindowToScreenRightTop(this, appSettings.DockOnlyMainScreen);
 
             // 2. 设置为 ToolWindow (不在 Alt+Tab 显示)
             WindowHelper.SetWindowToolStyle(this);
@@ -41,11 +39,13 @@ namespace Workman.Apps.Views
 
             // 4. 强制置底
             WindowHelper.SetWindowDownmost(this);
-
-            // 5. 挂载钩子，防止窗口状态被系统改变（如 Win+D 触发的排序改变）
-            WindowHelper.SetWindowHook(this);
         }
-
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            // 强制触发重新渲染
+            InvalidateVisual();
+        }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // 1. 定位到右上角
