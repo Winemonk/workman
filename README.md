@@ -12,7 +12,10 @@
 <a href="https://github.com/winemonk/workman/issues">报告问题</a>
 ·
 <a href="https://github.com/winemonk/workman/issues">功能建议</a>
+
 </p>
+
+</div>
 
 
 ---
