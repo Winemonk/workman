@@ -1,8 +1,8 @@
-![.NET](https://img.shields.io/badge/.NET-8-blue) ![WPF](https://img.shields.io/badge/UI-WPF-green) ![License](https://img.shields.io/badge/license-MIT-orange) ![Stars](https://img.shields.io/github/stars/winemonk/workman)
-
 <div align="center">
 
 <h1 align="center">Workman</h1>
+
+![.NET](https://img.shields.io/badge/.NET-8-blue) ![WPF](https://img.shields.io/badge/UI-WPF-green) ![License](https://img.shields.io/badge/license-MIT-orange) ![Stars](https://img.shields.io/github/stars/winemonk/workman)
 
 <p align="center">
 一个简洁高效的桌面工作日志记录工具
