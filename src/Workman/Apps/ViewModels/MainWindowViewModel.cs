@@ -5,24 +5,21 @@ using System.Windows;
 using Workman.Apps.Entities;
 using Workman.Core.Entities;
 using Workman.Core.Repositories;
+using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
     internal partial class MainWindowViewModel : ObservableObject
     {
         private readonly IDialogService _dialogService;
-        private readonly IRepository<Project> _projectRepository;
-        private readonly IRepository<WorkLog> _workLogRepository;
+        private readonly IWorkmanService _workmanService;
         private bool _taskBarSettingExecuting;
         private bool _taskBarExitExecuting;
 
-        public MainWindowViewModel(IDialogService dialogService,
-                                   IRepository<Project> projectRepository,
-                                   IRepository<WorkLog> workLogRepository)
+        public MainWindowViewModel(IDialogService dialogService, IWorkmanService workmanService)
         {
             _dialogService = dialogService;
-            _projectRepository = projectRepository;
-            _workLogRepository = workLogRepository;
+            _workmanService = workmanService;
             Initialize();
         }
 
@@ -55,18 +52,21 @@ namespace Workman.Apps.ViewModels
         [RelayCommand]
         private void NextDay()
         {
+            ShowLog = true;
             SelectedDate = SelectedDate.AddDays(1);
         }
 
         [RelayCommand]
         private void PreviousDay()
         {
+            ShowLog = true;
             SelectedDate = SelectedDate.AddDays(-1);
         }
 
         [RelayCommand]
         private void Today()
         {
+            ShowLog = true;
             DateTime day = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             SelectedDate = day;
         }
@@ -79,12 +79,10 @@ namespace Workman.Apps.ViewModels
                 { "date",SelectedDate }
             }, async dr =>
             {
-                if (dr.Result != ButtonResult.OK)
+                if (dr.Result == ButtonResult.OK)
                 {
-                    return;
+                    await RefreshDateWorkLog(SelectedDate);
                 }
-                List<WorkLogVO> workLogVOs = await QueryDateWorkLog(SelectedDate);
-                WorkLogs = new(workLogVOs);
             });
         }
 
@@ -104,13 +102,19 @@ namespace Workman.Apps.ViewModels
         }
 
         [RelayCommand]
+        private void TaskManage()
+        {
+            _dialogService.ShowDialog("TaskManageView");
+        }
+
+        [RelayCommand]
         private async Task DeleteLog(WorkLogVO? workLog)
         {
             if (workLog == null)
             {
                 return;
             }
-            bool success = await _workLogRepository.Delete(workLog.Id);
+            bool success = await _workmanService.DeleteLog(workLog.Id);
             if (!success)
             {
                 MessageBox.Show("删除失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -128,7 +132,11 @@ namespace Workman.Apps.ViewModels
             }
             _dialogService.ShowDialog("UpdateWorkLogView", new DialogParameters
             {
-                { "log", workLog }
+                { "workLogId", workLog.Id }
+            },
+            async () =>
+            {
+                await RefreshDateWorkLog(SelectedDate);
             });
         }
 
@@ -195,39 +203,57 @@ namespace Workman.Apps.ViewModels
 
         partial void OnSelectedDateChanged(DateTime value)
         {
-            Task.Run(async () =>
-            {
-                List<WorkLogVO> workLogVOs = await QueryDateWorkLog(value);
-                WorkLogs = new (workLogVOs);
-            });
+            RefreshDateWorkLog(SelectedDate);
         }
 
         private async void Initialize()
         {
-            List<WorkLogVO> workLogVOs = await QueryDateWorkLog(SelectedDate);
-            WorkLogs = new(workLogVOs);
+            await RefreshDateWorkLog(SelectedDate);
         }
 
-        private async Task<List<WorkLogVO>> QueryDateWorkLog(DateTime dateTime)
+        private async Task RefreshDateWorkLog(DateTime dateTime)
         {
-            IEnumerable<Project> projects = await _projectRepository.QueryRange();
+            List<WorkProject> projects = await _workmanService.GetProjects();
+            List<WorkTask> tasks = await _workmanService.GetTasks();
             DateTime day = new DateTime(dateTime.Year,dateTime.Month,dateTime.Day);
-            DateTime nextDay = day.AddDays(1);
-            IEnumerable<WorkLog> workLogs = await _workLogRepository.QueryRange(q => q.Where(e => e.Date >= day && e.Date < nextDay));
-            List<WorkLogVO> workLogVOs = workLogs.Select(log => new WorkLogVO
+            List<WorkLog> logs = await _workmanService.GetLogs(day);
+
+            List<WorkLogVO> logVOs = new List<WorkLogVO>();
+            foreach (WorkLog log in logs)
             {
-                Content = log.Content,
-                Date = log.Date,
-                ElapsedTime = log.ElapsedTime,
-                Id = log.Id,
-                ProjectId = log.ProjectId,
-                ProjectName = projects.First(p => p.Id == log.ProjectId).Name,
-            }).ToList();
-            for (int i = 0; i < workLogVOs.Count; i++)
-            {
-                workLogVOs[i].OrderId = i + 1;
+                WorkLogVO logVO = new WorkLogVO
+                {
+                    Id = log.Id,
+                    Date = log.Date,
+                    ElapsedTime = log.ElapsedTime,
+                };
+                WorkTask? task = await _workmanService.GetTask(log.TaskId);
+                if (task != null)
+                {
+                    WorkTaskVO taskVO = new WorkTaskVO
+                    {
+                        Id = task.Id,
+                        Name = task.Name
+                    };
+                    WorkProject? workProject = await _workmanService.GetProject(task.ProjectId);
+                    if(workProject != null)
+                    {
+                        taskVO.Project = new WorkProjectVO
+                        {
+                            Id = workProject.Id,
+                            Name = workProject.Name
+                        };
+                    }
+                    logVO.Task = taskVO;
+                }
+                logVOs.Add(logVO);
             }
-            return workLogVOs;
+
+            for (int i = 0; i < logVOs.Count; i++)
+            {
+                logVOs[i].OrderId = i + 1;
+            }
+            WorkLogs = new ObservableCollection<WorkLogVO>(logVOs);
         }
     }
 }

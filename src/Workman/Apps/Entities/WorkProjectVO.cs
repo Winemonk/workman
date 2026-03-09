@@ -1,21 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Workman.Core.Entities;
 
-namespace Workman.Apps.Entities
+namespace Workman.Core.Entities
 {
-    internal partial class WorkLogVO : ObservableObject
+    internal partial class WorkProjectVO : ObservableObject
     {
         [ObservableProperty]
-        private int _orderId;
+        private long _orderId;
 
         [ObservableProperty]
         private int _id;
 
         [ObservableProperty]
-        private WorkTaskVO _task;
+        private string _name;
 
         [ObservableProperty]
-        private DateTime _date;
+        private int _taskCount;
 
         [ObservableProperty]
         private float _elapsedTime;

@@ -4,32 +4,31 @@ using Hearth.Prism.Toolkit;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Workman.Core.Entities;
-using Workman.Core.Repositories;
+using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
     [RegisterDialog("ProjectManageView")]
     internal partial class ProjectManageViewModel : ObservableObject, IDialogAware
     {
-        private readonly IRepository<Project> _projectRepository;
+        private readonly IWorkmanService _workmanService;
         private readonly IDialogService _dialogService;
 
-        public ProjectManageViewModel(IRepository<Project> projectRepository,
-                                      IDialogService dialogService)
+        public ProjectManageViewModel(IDialogService dialogService, IWorkmanService workmanService)
         {
-            _projectRepository = projectRepository;
             _dialogService = dialogService;
+            _workmanService = workmanService;
         }
 
         [ObservableProperty]
-        private ObservableCollection<Project> _projects;
+        private ObservableCollection<WorkProjectVO> _projects;
 
         public DialogCloseListener RequestClose { get; }
 
         [RelayCommand]
         private void CreateProject()
         {
-            _dialogService.ShowDialog("CreateProjectView", async dr =>
+            _dialogService.ShowDialog("CreateWorkProjectView", async dr =>
             {
                 if(dr.Result == ButtonResult.OK)
                 {
@@ -39,7 +38,7 @@ namespace Workman.Apps.ViewModels
         }
 
         [RelayCommand]
-        private async Task DeleteProject(Project? project)
+        private async Task DeleteProject(WorkProjectVO? project)
         {
             if (project == null)
             {
@@ -53,7 +52,7 @@ namespace Workman.Apps.ViewModels
             {
                 return;
             }
-            bool success = await _projectRepository.Delete(project.Id);
+            bool success = await _workmanService.DeleteProject(project.Id);
             if (!success)
             {
                 MessageBox.Show("删除项目失败！",
@@ -88,8 +87,31 @@ namespace Workman.Apps.ViewModels
 
         private async Task RefreshProjects()
         {
-            IEnumerable<Project> projects = await _projectRepository.QueryRange();
-            Projects = new ObservableCollection<Project>(projects);
+            IEnumerable<WorkProject> projects = await _workmanService.GetProjects();
+            int orderId = 1;
+            List<WorkProjectVO> projectVOs = new List<WorkProjectVO>();
+            foreach (WorkProject project in projects)
+            {
+                float time = await _workmanService.GetProjectElapsedTime(project.Id);
+                int count = await _workmanService.GetProjectTaskCount(project.Id);
+                projectVOs.Add(new WorkProjectVO
+                {
+                    Id = project.Id,
+                    OrderId = orderId++,
+                    Name = project.Name,
+                    ElapsedTime = time,
+                    TaskCount = count,
+                });
+            }
+            Projects = new ObservableCollection<WorkProjectVO>(projectVOs);
+
+            Projects.CollectionChanged += (s, e) =>
+            {
+                for (int i = 0; i < Projects.Count; i++)
+                {
+                    Projects[i].OrderId = i + 1;
+                }
+            };
         }
     }
 }

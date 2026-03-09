@@ -20,11 +20,11 @@
             VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
                 <DockPanel Margin="3">
-                    <Label Content="开机启动：" />
+                    <Label Content="{Binding AutoStartup, Source={StaticResource LocalizationManager}}" />
                     <RibbonCheckBox IsChecked="{Binding Autostart}" />
                 </DockPanel>
                 <DockPanel Margin="3">
-                    <Label Content="停靠主屏：" />
+                    <Label Content="{Binding DockMainScreen, Source={StaticResource LocalizationManager}}" />
                     <RibbonCheckBox IsChecked="{Binding DockOnlyMainScreen}" />
                 </DockPanel>
             </StackPanel>
@@ -40,7 +40,7 @@
                     <TextBlock
                         Margin="2"
                         Foreground="Red"
-                        Text="退出程序" />
+                        Text="{Binding Exit, Source={StaticResource LocalizationManager}}" />
                 </StackPanel>
             </Button>
             <Button Command="{Binding CancelCommand}">
@@ -50,7 +50,7 @@
                         Height="16"
                         Margin="2"
                         Source="/Apps/Resources/save32.png" />
-                    <TextBlock Margin="2" Text="保存并关闭设置" />
+                    <TextBlock Margin="2" Text="{Binding SaveAndClose, Source={StaticResource LocalizationManager}}" />
                 </StackPanel>
             </Button>
         </UniformGrid>

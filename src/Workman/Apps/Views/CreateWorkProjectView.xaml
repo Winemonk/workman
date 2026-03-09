@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Workman.Apps.Views.CreateProjectView"
+    x:Class="Workman.Apps.Views.CreateWorkProjectView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,14 +11,15 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
-        <Label>项目名称：</Label>
+        <Label Content="{Binding NewIteration, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+        <Label Content="{Binding Name, Source={StaticResource LocalizationManager}}" />
         <TextBox Margin="3" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel
             Margin="3"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-            <Button Command="{Binding ConfirmCommand}" Content="确 认" />
-            <Button Command="{Binding CancelCommand}" Content="取 消" />
+            <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+            <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

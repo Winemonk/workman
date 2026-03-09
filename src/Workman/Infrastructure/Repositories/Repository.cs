@@ -22,12 +22,12 @@ namespace Workman.Infrastructure.Repositories
         public virtual async Task<bool> Delete(object key) =>
             await DbContextQueuedTask.Run(async () =>
             {
-                TEntity? entity = await Query(key).ConfigureAwait(false) ?? throw new ArgumentException("Entity not found");
+                TEntity? entity = await Query(key) ?? throw new ArgumentException("Entity not found");
                 _baseDbSet.Remove(entity);
                 int changes = 0;
                 try
                 {
-                    changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                    changes = await _baseDbContext.SaveChangesAsync();
                 }
                 catch
                 {
@@ -35,7 +35,7 @@ namespace Workman.Infrastructure.Repositories
                     throw;
                 }
                 return changes > 0;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<bool> DeleteRange(params object[] keys) =>
             await DbContextQueuedTask.Run(async () =>
@@ -43,7 +43,7 @@ namespace Workman.Infrastructure.Repositories
                 IEnumerable<TEntity> entities = _baseDbSet;
                 if (keys != null && keys.Length > 0)
                 {
-                    entities = await QueryRange(keys).ConfigureAwait(false);
+                    entities = await QueryRange(keys);
                     if (entities == null || !entities.Any())
                     {
                         throw new ArgumentException("Entities not found");
@@ -54,7 +54,7 @@ namespace Workman.Infrastructure.Repositories
                 int changes = 0;
                 try
                 {
-                    changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                    changes = await _baseDbContext.SaveChangesAsync();
                 }
                 catch
                 {
@@ -62,13 +62,13 @@ namespace Workman.Infrastructure.Repositories
                     throw;
                 }
                 return changes > 0;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<bool> DeleteRange(Func<IQueryable<TEntity>, IQueryable<TEntity>>? queryAction) =>
             await DbContextQueuedTask.Run(async () =>
             {
                 IEnumerable<TEntity> entities = _baseDbSet;
-                entities = await QueryRange(queryAction).ConfigureAwait(false);
+                entities = await QueryRange(queryAction);
                 if (entities == null || !entities.Any())
                 {
                     throw new ArgumentException("Entities not found");
@@ -78,7 +78,7 @@ namespace Workman.Infrastructure.Repositories
                 int changes = 0;
                 try
                 {
-                    changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                    changes = await _baseDbContext.SaveChangesAsync();
                 }
                 catch
                 {
@@ -86,7 +86,7 @@ namespace Workman.Infrastructure.Repositories
                     throw;
                 }
                 return changes > 0;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<TEntity?> Insert(TEntity entity) =>
             await DbContextQueuedTask.Run(async () =>
@@ -95,7 +95,7 @@ namespace Workman.Infrastructure.Repositories
                 int changes = 0;
                 try
                 {
-                    changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                    changes = await _baseDbContext.SaveChangesAsync();
                 }
                 catch
                 {
@@ -107,7 +107,7 @@ namespace Workman.Infrastructure.Repositories
                     throw new DbUpdateException("Failed to insert entity", new ReadOnlyCollection<EntityEntry<TEntity>>(new List<EntityEntry<TEntity>> { entityEntry }));
                 }
                 return entity;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<IEnumerable<TEntity>> InsertRange(IEnumerable<TEntity> entities) =>
             await DbContextQueuedTask.Run(async () =>
@@ -116,7 +116,7 @@ namespace Workman.Infrastructure.Repositories
                 int changes = 0;
                 try
                 {
-                    changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                    changes = await _baseDbContext.SaveChangesAsync();
                 }
                 catch
                 {
@@ -124,7 +124,7 @@ namespace Workman.Infrastructure.Repositories
                     throw;
                 }
                 return entities;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<PagedResult<TEntity>> PagedQuery(int pageNumber, int pageSize, Func<IQueryable<TEntity>, IQueryable<TEntity>>? queryAction = null) =>
             await DbContextQueuedTask.Run(async () =>
@@ -142,7 +142,7 @@ namespace Workman.Infrastructure.Repositories
                     .Take(pageSize)
                     .AsEnumerable();
                 return new PagedResult<TEntity>(pageNumber, pageSize, totalCount, items);
-            }).ConfigureAwait(false);
+            });
 
         public async Task<IEnumerable<TEntity>> QueryRange(Func<IQueryable<TEntity>, IQueryable<TEntity>>? queryAction = null) =>
             await DbContextQueuedTask.Run(async () =>
@@ -152,10 +152,10 @@ namespace Workman.Infrastructure.Repositories
                     query = queryAction.Invoke(query);
                 var sql = query.ToQueryString();
                 return query.AsEnumerable();
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<TEntity?> Query(object key) =>
-            await DbContextQueuedTask.Run(async () => await _baseDbSet.FindAsync(key).ConfigureAwait(false)).ConfigureAwait(false);
+            await DbContextQueuedTask.Run(async () => await _baseDbSet.FindAsync(key));
 
         public virtual async Task<IEnumerable<TEntity>> QueryRange(params object[] keys) =>
             await DbContextQueuedTask.Run(async () =>
@@ -163,26 +163,26 @@ namespace Workman.Infrastructure.Repositories
                 if (keys == null || keys.Length == 0)
                     return _baseDbSet.AsEnumerable();
                 return keys.Select(key => _baseDbSet.Find(key)!).Where(e => e != null);
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<TEntity> Update(TEntity entity) =>
             await DbContextQueuedTask.Run(async () =>
             {
                 EntityEntry<TEntity> entityEntry = _baseDbSet.Update(entity);
-                int changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                int changes = await _baseDbContext.SaveChangesAsync();
                 if (changes == 0)
                 {
                     throw new DbUpdateException("Failed to update entity", new ReadOnlyCollection<EntityEntry<TEntity>>(new List<EntityEntry<TEntity>> { entityEntry }));
                 }
                 return entity;
-            }).ConfigureAwait(false);
+            });
 
         public virtual async Task<IEnumerable<TEntity>> UpdateRange(IEnumerable<TEntity> entities) =>
             await DbContextQueuedTask.Run(async () =>
             {
                 _baseDbSet.UpdateRange(entities);
-                int changes = await _baseDbContext.SaveChangesAsync().ConfigureAwait(false);
+                int changes = await _baseDbContext.SaveChangesAsync();
                 return entities;
-            }).ConfigureAwait(false);
+            });
     }
 }

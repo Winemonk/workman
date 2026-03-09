@@ -3,18 +3,18 @@ using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
 using System.Windows;
 using Workman.Core.Entities;
-using Workman.Core.Repositories;
+using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
-    [RegisterDialog("CreateProjectView")]
-    internal partial class CreateProjectViewModel : ObservableObject, IDialogAware
+    [RegisterDialog("CreateWorkProjectView")]
+    internal partial class CreateWorkProjectViewModel : ObservableObject, IDialogAware
     {
-        private readonly IRepository<Project> _projectRepository;
+        private readonly IWorkmanService _workmanService;
 
-        public CreateProjectViewModel(IRepository<Project> projectRepository)
+        public CreateWorkProjectViewModel(IWorkmanService workmanService)
         {
-            _projectRepository = projectRepository;
+            _workmanService = workmanService;
         }
 
         [ObservableProperty]
@@ -30,11 +30,8 @@ namespace Workman.Apps.ViewModels
                 MessageBox.Show("名称不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            Project? project = await _projectRepository.Insert(new Project
-            {
-                Name = Name
-            });
-            if(project == null)
+            WorkProject? newProject = await _workmanService.CreateProject(Name);
+            if (newProject == null)
             {
                 MessageBox.Show("创建失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;

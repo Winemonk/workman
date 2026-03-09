@@ -58,8 +58,21 @@
             <Button
                 Padding="3"
                 VerticalAlignment="Center"
+                Command="{Binding ExportLogCommand}"
+                Cursor="Hand"
+                ToolTip="{Binding ExportLog, Source={StaticResource LocalizationManager}}"
+                Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Image
+                    Width="16"
+                    Height="16"
+                    Source="/Apps/Resources/export32.png" />
+            </Button>
+            <Button
+                Padding="3"
+                VerticalAlignment="Center"
                 Command="{Binding AppSettingCommand}"
                 Cursor="Hand"
+                ToolTip="{Binding AppSetting, Source={StaticResource LocalizationManager}}"
                 Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Image
                     Width="16"
@@ -77,7 +90,7 @@
                     Height="14"
                     Source="/Apps/Resources/CloseCircle64.png" />
             </Button>-->
-            <ToggleButton IsChecked="{Binding IsPin}">
+            <ToggleButton IsChecked="{Binding IsPin}" ToolTip="{Binding Dock, Source={StaticResource LocalizationManager}}">
                 <Image Width="16" Height="16">
                     <Image.Style>
                         <Style TargetType="Image">
@@ -92,182 +105,173 @@
                 </Image>
             </ToggleButton>
         </StackPanel>
-        <Border
+        <StackPanel
             Grid.Row="1"
-            Width="300"
+            Orientation="Vertical"
+            Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DatePicker
+                Background="Transparent"
+                BorderThickness="0"
+                SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedDateFormat="Long" />
+            <UniformGrid Rows="2">
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding PreviousDayCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/back32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding PrevDay, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding NextDayCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/next32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding NextDay, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding TodayCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/current32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Today, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding ProjectManageCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/list32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding IterationManage, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding TaskManageCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/task32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding TaskManage, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding AddLogCommand}">
+                    <DockPanel>
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="3,0"
+                            Source="/Apps/Resources/add32.png" />
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding AddLog, Source={StaticResource LocalizationManager}}" />
+                    </DockPanel>
+                </Button>
+            </UniformGrid>
+            <DataGrid
+                MinHeight="60"
+                MaxWidth="520"
+                d:ItemsSource="{d:SampleData}"
+                IsReadOnly="True"
+                ItemsSource="{Binding WorkLogs}"
+                Visibility="{Binding ShowLog, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <DataGrid.Resources>
+                    <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding OrderId}" Header="{Binding IDX, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Task}" Header="{Binding Task, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding ElapsedTime, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn
+                        CanUserResize="False"
+                        CanUserSort="False"
+                        Header="{Binding Operation, Source={StaticResource LocalizationManager}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Button
+                                        Margin="3,1"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding DataContext.EditLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding .}"
+                                        Cursor="Hand"
+                                        ToolTip="{Binding Edit, Source={StaticResource LocalizationManager}}">
+                                        <Image
+                                            Width="16"
+                                            Height="16"
+                                            Source="/Apps/Resources/edit32.png" />
+                                    </Button>
+                                    <Button
+                                        Margin="3,1"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding DataContext.DeleteLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding .}"
+                                        Cursor="Hand"
+                                        ToolTip="{Binding Delete, Source={StaticResource LocalizationManager}}">
+                                        <Image
+                                            Width="16"
+                                            Height="16"
+                                            Source="/Apps/Resources/delete32.png" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Command="{Binding ShowWorkLogCommand}">
+                <Image Width="14" Height="14">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="/Apps/Resources/upward32.png" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowLog}" Value="false">
+                                    <Setter Property="Source" Value="/Apps/Resources/down32.png" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Button>
+        </StackPanel>
+        <!--<Border
+            Grid.Row="1"
+            MaxWidth="520"
             Visibility="{Binding IsPin, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel Margin="3" Orientation="Vertical">
-                <DatePicker
-                    Background="Transparent"
-                    BorderThickness="0"
-                    SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    SelectedDateFormat="Long" />
-                <UniformGrid Rows="2">
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding PreviousDayCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/back32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="前一天" />
-                        </DockPanel>
-                    </Button>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding NextDayCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/next32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="后一天" />
-                        </DockPanel>
-                    </Button>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding TodayCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/current32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="今  天" />
-                        </DockPanel>
-                    </Button>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding AddLogCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/add32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="添加日志" />
-                        </DockPanel>
-                    </Button>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding ExportLogCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/export32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="导出日志" />
-                        </DockPanel>
-                    </Button>
-                    <Button HorizontalContentAlignment="Stretch" Command="{Binding ProjectManageCommand}">
-                        <DockPanel>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Margin="3,0"
-                                Source="/Apps/Resources/list32.png" />
-                            <TextBlock HorizontalAlignment="Center" Text="项目管理" />
-                        </DockPanel>
-                    </Button>
-                </UniformGrid>
-                <DataGrid
-                    MinHeight="60"
-                    d:ItemsSource="{d:SampleData}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding WorkLogs}"
-                    Visibility="{Binding ShowLog, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <DataGrid.Resources>
-                        <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
-                    </DataGrid.Resources>
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Padding" Value="5,1" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding OrderId}" Header="序号">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding ProjectName}" Header="项目">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Header="内容">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="Margin" Value="5,2" />
-                                    <Setter Property="TextWrapping" Value="Wrap" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Binding="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="耗时">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn
-                            CanUserResize="False"
-                            CanUserSort="False"
-                            Header="操作">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                        <Button
-                                            Margin="3,1"
-                                            VerticalAlignment="Center"
-                                            Command="{Binding DataContext.EditLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding .}"
-                                            Cursor="Hand">
-                                            <Image
-                                                Width="16"
-                                                Height="16"
-                                                Source="/Apps/Resources/edit32.png" />
-                                        </Button>
-                                        <Button
-                                            Margin="3,1"
-                                            VerticalAlignment="Center"
-                                            Command="{Binding DataContext.DeleteLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding .}"
-                                            Cursor="Hand">
-                                            <Image
-                                                Width="16"
-                                                Height="16"
-                                                Source="/Apps/Resources/delete32.png" />
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Button Command="{Binding ShowWorkLogCommand}">
-                    <Image Width="14" Height="14">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Source" Value="/Apps/Resources/upward32.png" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowLog}" Value="false">
-                                        <Setter Property="Source" Value="/Apps/Resources/down32.png" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                </Button>
+
             </StackPanel>
-        </Border>
+        </Border>-->
         <tb:TaskbarIcon
             IconSource="/Apps/Resources/wm@64.ico"
             LeftClickCommand="{Binding ActiveCommand}"
@@ -277,12 +281,12 @@
             Visibility="Visible">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Command="{Binding DataContext.TaskBarActiveCommand, Source={StaticResource BindingProxy}}" Header="打开主界面">
+                    <MenuItem Command="{Binding DataContext.TaskBarActiveCommand, Source={StaticResource BindingProxy}}" Header="{Binding OpenMainWindow, Source={StaticResource LocalizationManager}}">
                         <MenuItem.Icon>
                             <Image Source="/Apps/Resources/home32.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Command="{Binding DataContext.TaskBarAppSettingCommand, Source={StaticResource BindingProxy}}" Header="程序设置">
+                    <MenuItem Command="{Binding DataContext.TaskBarAppSettingCommand, Source={StaticResource BindingProxy}}" Header="{Binding AppSetting, Source={StaticResource LocalizationManager}}">
                         <MenuItem.Icon>
                             <Image Source="/Apps/Resources/setting32.png" />
                         </MenuItem.Icon>
@@ -290,7 +294,7 @@
                     <MenuItem
                         Command="{Binding DataContext.TaskBarExitCommand, Source={StaticResource BindingProxy}}"
                         Foreground="Red"
-                        Header="退出程序">
+                        Header="{Binding Exit, Source={StaticResource LocalizationManager}}">
                         <MenuItem.Icon>
                             <Image Source="/Apps/Resources/close32.png" />
                         </MenuItem.Icon>

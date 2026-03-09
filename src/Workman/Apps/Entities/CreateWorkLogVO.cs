@@ -7,11 +7,30 @@ namespace Workman.Apps.Entities
     {
         [ObservableProperty]
         private long _orderId;
+
         [ObservableProperty]
-        private Project _project;
+        private WorkTaskVO _task;
+
         [ObservableProperty]
-        private string _content = string.Empty;
+        private string _content;
+
         [ObservableProperty]
         private float _elapsedTime;
+
+        [ObservableProperty]
+        private bool _isCreated;
+
+        partial void OnTaskChanged(WorkTaskVO value)
+        {
+            if(value == null)
+            {
+                Content = null;
+                return;
+            }
+            if(string.IsNullOrEmpty(Content))
+            {
+                Content = value.Name;
+            }
+        }
     }
 }

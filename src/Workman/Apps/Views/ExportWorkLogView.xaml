@@ -11,21 +11,22 @@
     mc:Ignorable="d">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Label Content="导出日志：" />
+            <Label Content="{Binding ExportLog, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+            <Label Content="{Binding StartDate, Source={StaticResource LocalizationManager}}" />
             <DatePicker
                 Background="Transparent"
                 BorderThickness="0"
                 DisplayDateEnd="{Binding EndDate}"
                 SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 SelectedDateFormat="Long" />
-            <Label Content="至" />
+            <Label Content="{Binding EndDate, Source={StaticResource LocalizationManager}}" />
             <DatePicker
                 Background="Transparent"
                 BorderThickness="0"
                 DisplayDateStart="{Binding StartDate}"
                 SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 SelectedDateFormat="Long" />
-            <Label Content="输出目录：" />
+            <Label Content="{Binding Output, Source={StaticResource LocalizationManager}}" />
             <DockPanel>
                 <Button
                     Margin="2"
@@ -46,8 +47,8 @@
                 Margin="3"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
-                <Button Command="{Binding ConfirmCommand}" Content="确 认" />
-                <Button Command="{Binding CancelCommand}" Content="取 消" />
+                <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+                <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
             </StackPanel>
         </StackPanel>
     </Grid>

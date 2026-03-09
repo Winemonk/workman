@@ -17,10 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Apps\Resources\task32.png" />
     <None Remove="Apps\Resources\wm%4064.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Apps\Resources\task32.png" />
     <Resource Include="Apps\Resources\wm@64.ico" />
   </ItemGroup>
 	
@@ -63,6 +65,23 @@
     <Resource Include="Apps\Resources\setting32.png" />
     <Resource Include="Apps\Resources\upward32.png" />
     <Resource Include="Apps\Resources\wm@64.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources\lang.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>lang.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources\lang.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>lang.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 

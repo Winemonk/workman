@@ -11,25 +11,45 @@
     mc:Ignorable="d">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Label Content="项目：" />
+            <Label Content="{Binding Task, Source={StaticResource LocalizationManager}}" />
             <ComboBox
                 Margin="3"
-                DisplayMemberPath="Name"
-                ItemsSource="{Binding Projects}"
-                SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="内容：" />
-            <TextBox
-                Margin="3"
-                Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextWrapping="Wrap" />
-            <Label Content="耗时：" />
-            <TextBox Margin="3" Text="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                ItemsSource="{Binding Tasks}"
+                SelectedItem="{Binding SelectedTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding Content, Source={StaticResource LocalizationManager}}" />
+            <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding ElapsedTime, Source={StaticResource LocalizationManager}}" />
+            <DockPanel Margin="3">
+                <UniformGrid DockPanel.Dock="Right" Rows="2">
+                    <Button
+                        Width="20"
+                        Height="9"
+                        Margin="0"
+                        Padding="0"
+                        Background="Transparent"
+                        Command="{Binding IncreaseElapsedTimeCommand}"
+                        FontSize="7">
+                        <Path Data="M 0 5 L 7 0 L 14 5 Z" Fill="Black" />
+                    </Button>
+                    <Button
+                        Width="20"
+                        Height="9"
+                        Margin="0"
+                        Padding="0"
+                        Background="Transparent"
+                        Command="{Binding DecreaseElapsedTimeCommand}"
+                        FontSize="7">
+                        <Path Data="M 0 0 L 7 5 L 14 0 Z" Fill="Black" />
+                    </Button>
+                </UniformGrid>
+                <TextBox Text="{Binding ElapsedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
             <StackPanel
                 Margin="3"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
-                <Button Command="{Binding ConfirmCommand}" Content="确 认" />
-                <Button Command="{Binding CancelCommand}" Content="取 消" />
+                <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+                <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
             </StackPanel>
         </StackPanel>
     </Grid>

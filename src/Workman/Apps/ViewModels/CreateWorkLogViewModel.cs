@@ -5,31 +5,26 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Workman.Apps.Entities;
 using Workman.Core.Entities;
-using Workman.Core.Repositories;
+using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
     [RegisterDialog("CreateWorkLogView")]
     internal partial class CreateWorkLogViewModel : ObservableObject, IDialogAware
     {
-        private readonly IRepository<Project> _projectRepository;
-        private readonly IRepository<WorkLog> _workLogRepository;
+        private readonly IWorkmanService _workmanService;
         private DateTime _dateTime;
 
-        public CreateWorkLogViewModel(IRepository<WorkLog> workLogRepository,
-                                      IRepository<Project> projectRepository)
+        public CreateWorkLogViewModel(IWorkmanService workmanService)
         {
-            _workLogRepository = workLogRepository;
-            _projectRepository = projectRepository;
+            _workmanService = workmanService;
         }
 
         [ObservableProperty]
-        private List<Project> _projects;
+        private List<WorkTaskVO> _tasks;
 
         [ObservableProperty]
         private ObservableCollection<CreateWorkLogVO> _workLogs;
-
-        private Project _memoryProject;
 
         public DialogCloseListener RequestClose { get; }
 
@@ -38,31 +33,35 @@ namespace Workman.Apps.ViewModels
         {
             foreach (CreateWorkLogVO log in WorkLogs)
             {
-                if (string.IsNullOrWhiteSpace(log.Content))
+                if (log.IsCreated)
                 {
-                    MessageBox.Show($"项：{log.OrderId} 内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    continue;
                 }
                 if (log.ElapsedTime <= 0)
                 {
                     MessageBox.Show($"项：{log.OrderId} 耗时必须大于0！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+                if (log.Task == null)
+                {
+                    MessageBox.Show($"项：{log.OrderId} 任务不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(log.Content))
+                {
+                    MessageBox.Show($"项：{log.OrderId} 内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
 
-            IEnumerable<WorkLog> workLogs = WorkLogs.Select(l => new WorkLog
+            foreach (CreateWorkLogVO log in WorkLogs.Where(t => !t.IsCreated))
             {
-                Content = l.Content,
-                Date = _dateTime,
-                ElapsedTime = l.ElapsedTime,
-                ProjectId = l.Project.Id,
-            });
-
-            IEnumerable<WorkLog> insertedWorkLogs = await _workLogRepository.InsertRange(workLogs);
-            if (!insertedWorkLogs.Any())
-            {
-                MessageBox.Show("添加日志失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                WorkLog? newLog = await _workmanService.CreateLog(_dateTime, log.Task.Id, log.Content, log.ElapsedTime);
+                if (newLog == null)
+                {
+                    MessageBox.Show($"添加日志：{log.OrderId}失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
             RequestClose.Invoke(ButtonResult.OK);
         }
@@ -90,8 +89,33 @@ namespace Workman.Apps.ViewModels
             {
                 RequestClose.Invoke(ButtonResult.Cancel);
             }
-            IEnumerable<Project> projects = await _projectRepository.QueryRange();
-            Projects = projects.ToList();
+            IEnumerable<WorkTask> workTasks = await _workmanService.GetTasks();
+            List<WorkTaskVO> taskVOs = new List<WorkTaskVO>();
+            int orderId = 1;
+            foreach (WorkTask wt in workTasks)
+            {
+                float taskElapsedTime = await _workmanService.GetTaskElapsedTime(wt.Id);
+                WorkTaskVO taskVO = new WorkTaskVO
+                {
+                    OrderId = orderId++,
+                    Id = wt.Id,
+                    Name = wt.Name,
+                    TotalElapsedTime = taskElapsedTime,
+                };
+                await _workmanService.GetProject(wt.ProjectId).ContinueWith(projectTask =>
+                {
+                    if (projectTask.Result != null)
+                    {
+                        taskVO.Project = new WorkProjectVO
+                        {
+                            Id = projectTask.Result.Id,
+                            Name = projectTask.Result.Name
+                        };
+                    }
+                });
+                taskVOs.Add(taskVO);
+            }
+            Tasks = taskVOs.ToList();
             WorkLogs = new ObservableCollection<CreateWorkLogVO>();
             WorkLogs.CollectionChanged += WorkLogs_CollectionChanged;
         }
@@ -104,17 +128,8 @@ namespace Workman.Apps.ViewModels
             }
             foreach (CreateWorkLogVO item in e.NewItems ?? Array.Empty<CreateWorkLogVO>())
             {
-                item.Project = _memoryProject;
                 item.OrderId = WorkLogs.Count;
                 item.ElapsedTime = 1;
-                item.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(CreateWorkLogVO.Project)
-                    && s is CreateWorkLogVO newItem)
-                    {
-                        _memoryProject = newItem.Project;
-                    }
-                };
             }
         }
     }

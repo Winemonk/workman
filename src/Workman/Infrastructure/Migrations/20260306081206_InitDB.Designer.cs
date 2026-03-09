@@ -11,7 +11,7 @@ using Workman.Infrastructure.DbContexts;
 namespace Workman.Infrastructure.Migrations
 {
     [DbContext(typeof(WorkmanDbContext))]
-    [Migration("20260302083428_InitDB")]
+    [Migration("20260306081206_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -20,9 +20,35 @@ namespace Workman.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.23");
 
-            modelBuilder.Entity("Workman.Core.Entities.Project", b =>
+            modelBuilder.Entity("Workman.Core.Entities.WorkLog", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_id");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_date");
+
+                    b.Property<float>("ElapsedTime")
+                        .HasColumnType("REAL")
+                        .HasColumnName("f_elapsed_time");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_task_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("wm_work_logs");
+                });
+
+            modelBuilder.Entity("Workman.Core.Entities.WorkProject", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
@@ -34,12 +60,12 @@ namespace Workman.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("wm_projects");
+                    b.ToTable("wm_work_projects");
                 });
 
-            modelBuilder.Entity("Workman.Core.Entities.WorkLog", b =>
+            modelBuilder.Entity("Workman.Core.Entities.WorkTask", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
@@ -49,15 +75,7 @@ namespace Workman.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("f_content");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("f_date");
-
-                    b.Property<float>("ElapsedTime")
-                        .HasColumnType("REAL")
-                        .HasColumnName("f_elapsed_time");
-
-                    b.Property<long>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_project_id");
 
@@ -65,12 +83,21 @@ namespace Workman.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("wm_work_logs");
+                    b.ToTable("wm_work_tasks");
                 });
 
             modelBuilder.Entity("Workman.Core.Entities.WorkLog", b =>
                 {
-                    b.HasOne("Workman.Core.Entities.Project", null)
+                    b.HasOne("Workman.Core.Entities.WorkTask", null)
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Workman.Core.Entities.WorkTask", b =>
+                {
+                    b.HasOne("Workman.Core.Entities.WorkProject", null)
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)

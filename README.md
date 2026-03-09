@@ -5,13 +5,13 @@
 ![.NET](https://img.shields.io/badge/.NET-8-blue) ![WPF](https://img.shields.io/badge/UI-WPF-green) ![License](https://img.shields.io/badge/license-MIT-orange) ![Stars](https://img.shields.io/github/stars/winemonk/workman)
 
 <p align="center">
-一个简洁高效的桌面工作日志记录工具
+A concise and efficient desktop work log recording tool
 <br />
-基于 WPF + .NET 8 构建
+Built with WPF + .NET 8
 <br /><br />
-<a href="https://github.com/winemonk/workman/issues">报告问题</a>
+<a href="https://github.com/winemonk/workman/issues">Report Issues</a>
 ·
-<a href="https://github.com/winemonk/workman/issues">功能建议</a>
+<a href="https://github.com/winemonk/workman/issues">Feature Suggestions</a>
 
 </p>
 
@@ -20,44 +20,44 @@
 
 ---
 
-# 📖 项目介绍
+# 📖 Project Introduction
 
-**Workman** 是一个桌面工作日志记录工具，用于帮助开发者或办公人员记录每日工作内容，并通过桌面组件实现快速记录与查看。
+**Workman** is a desktop work log recording tool designed to help developers and office workers record daily work content and enable quick recording and viewing through desktop widgets.
 
-主要目标：
+Main Goals:
 
-- 提供轻量级工作日志管理
-- 支持项目维度记录日志
-- 支持桌面组件快速记录
-- 提供清晰直观的界面
-
----
-
-# ✨ 功能特性
-
-### 📝 日志管理
-- 创建每日工作日志
-- 编辑 / 删除日志
-- 支持项目关联
-
-### 📁 项目管理
-- 创建多个项目
-- 日志按项目分类
-
-### 🖥 桌面组件
-- 桌面常驻显示
-- 快速查看今日工作
-- 快速新增日志
-
-### ⚙ 系统设置
-- 自定义日志行为
-- 应用参数配置
+- Provide lightweight work log management
+- Support project-based log recording
+- Enable quick recording through desktop widgets
+- Deliver a clear and intuitive interface
 
 ---
 
-# 🖼 应用截图
+# ✨ Features
 
-## 主界面
+### 📝 Log Management
+- Create daily work logs
+- Edit / Delete logs
+- Support project association
+
+### 📁 Project Management
+- Create multiple projects
+- Organize logs by project
+
+### 🖥 Desktop Widgets
+- Always-on-top desktop display
+- Quick view of today's work
+- Quick add new logs
+
+### ⚙ System Settings
+- Customize log behavior
+- Configure application parameters
+
+---
+
+# 🖼 Screenshots
+
+## Main Interface
 
 ![main](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041132253.png)
 
@@ -65,7 +65,7 @@
 
 ---
 
-## 桌面组件
+## Desktop Widgets
 
 ![desktop1](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041130635.png)
 
@@ -75,7 +75,7 @@
 
 ---
 
-## 项目管理
+## Project Management
 
 ![project1](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041133264.png)
 
@@ -83,42 +83,42 @@
 
 ---
 
-## 新建日志
+## Create New Log
 
 ![log](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041134424.png)
 
 ---
 
-## 设置
+## Settings
 
 ![setting](https://raw.githubusercontent.com/Winemonk/images/master/blog/post/202603041134696.png)
 
 ---
 
-# 🧰 技术栈
+# 🧰 Technology Stack
 
-| 技术   | 说明              |
-| ------ | ----------------- |
-| WPF    | Windows 桌面 UI   |
-| .NET 8 | 应用运行时        |
-| Prism  | MVVM + 模块化框架 |
-| DryIoc | 依赖注入容器      |
-| SQLite | 本地数据库        |
+| Technology | Description       |
+| ---------- | ----------------- |
+| WPF        | Windows Desktop UI   |
+| .NET 8     | Application Runtime |
+| Prism      | MVVM + Modular Framework |
+| DryIoc     | Dependency Injection Container |
+| SQLite     | Local Database     |
 
 ---
 
-# 📁 项目结构
+# 📁 Project Structure
 
 workman
- ├─ Workman.Apps WPF界面&核心业务逻辑实现
- ├─ Workman.Core 实体
- ├─ Workman.Infrastructure 数据访问
+ ├─ Workman.Apps WPF UI & Core Business Logic Implementation
+ ├─ Workman.Core Entities
+ ├─ Workman.Infrastructure Data Access
 
 ---
 
-# 🚀 快速开始
+# 🚀 Quick Start
 
-## 运行环境
+## Runtime Requirements
 
 - Windows 10 / Windows 11
 - .NET 8 Runtime
@@ -126,7 +126,7 @@ workman
 
 ---
 
-## 克隆项目
+## Clone Project
 
 ```bash
 git clone https://github.com/yourname/workman.git
@@ -134,71 +134,71 @@ git clone https://github.com/yourname/workman.git
 
 ---
 
-## 运行项目
+## Run Project
 
 ```bash
 cd workman
 ```
 
-使用 Visual Studio 2022 打开解决方案并运行。
+Open the solution with Visual Studio 2022 and run.
 
-# 🧩 架构说明
+# 🧩 Architecture Overview
 
-项目采用 MVVM + Prism 模块化架构
+The project adopts MVVM + Prism modular architecture
 
-## 核心结构：
+## Core Structure:
 
 View → ViewModel → Service → Repository → SQLite
 
-## 特点：
+## Features:
 
-模块化设计
+Modular Design
 
-松耦合
+Loose Coupling
 
-易扩展
+Easy to Extend
 
-易测试
+Easy to Test
 
 # 📌 Roadmap
 
-未来计划：
+Future Plans:
 
- 日志统计分析
+ Log Statistics and Analysis
 
- 数据导出
+ Data Export
 
- Markdown 支持
+ Markdown Support
 
- 多主题支持
+ Multi-theme Support
 
- 云同步
+ Cloud Sync
 
-# 🤝 贡献
+# 🤝 Contribution
 
-欢迎提交 Issue 或 Pull Request。
+Welcome to submit Issues or Pull Requests.
 
-贡献流程：
+Contribution Process:
 
-1. Fork 项目
-2. 创建分支
+1. Fork the project
+2. Create a branch
     ```bash
     git checkout -b feature/your-feature
     ```
-3. 提交代码
+3. Commit code
     ```bash
     git commit -m "add new feature"
     ```
-4. 推送分支
+4. Push branch
     ```bash
     git push origin feature/your-feature
     ```
-5. 创建 Pull Request
+5. Create a Pull Request
 
 # 📄 License
 
 MIT License
 
-# ⭐ 支持项目
+# ⭐ Support the Project
 
-如果这个项目对你有帮助，欢迎点个 Star ⭐
+If this project has been helpful to you, please give it a Star ⭐

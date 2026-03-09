@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media;
 using Workman.Apps.Configs;
 using Workman.Apps.Views;
 
@@ -24,6 +22,7 @@ namespace Workman
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            //LocalizationCultureHelper.SetCulture("en");
             var exePath = Process.GetCurrentProcess().MainModule?.FileName;
             var exeDirectory = Path.GetDirectoryName(exePath);
             if (!string.IsNullOrEmpty(exeDirectory))

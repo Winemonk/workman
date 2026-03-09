@@ -6,52 +6,98 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Width="280"
+    Width="520"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
         <StackPanel Orientation="Vertical">
             <DockPanel>
-                <Label Content="项目列表：" />
+                <Label Content="{Binding IterationManage, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Margin="3,1"
                         Command="{Binding CreateProjectCommand}"
-                        Content="新建项目" />
+                        Content="{Binding NewIteration, Source={StaticResource LocalizationManager}}" />
                 </StackPanel>
             </DockPanel>
-            <ListBox
-                MaxHeight="92"
+            <DataGrid
+                Height="88"
                 Margin="3"
-                HorizontalContentAlignment="Stretch"
-                d:ItemsSource="{d:SampleData}"
-                Background="Transparent"
                 ItemsSource="{Binding Projects}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <Label Content="{Binding Name}" />
-                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button
-                                    Margin="3,1"
-                                    Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                    CommandParameter="{Binding .}"
-                                    Cursor="Hand">
-                                    <Image
-                                        Width="16"
-                                        Height="16"
-                                        Source="/Apps/Resources/delete32.png" />
-                                </Button>
-                            </StackPanel>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding OrderId}" Header="{Binding IDX, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Name}"
+                        Header="{Binding Name, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TaskCount}" Header="{Binding TaskCount, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ElapsedTime}" Header="{Binding TotalElapsedTime, Source={StaticResource LocalizationManager}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="{Binding Operation, Source={StaticResource LocalizationManager}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <Button
+                                        Margin="3,1"
+                                        Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                        CommandParameter="{Binding .}"
+                                        Cursor="Hand"
+                                        ToolTip="{Binding Edit, Source={StaticResource LocalizationManager}}">
+                                        <Image
+                                            Width="16"
+                                            Height="16"
+                                            Source="/Apps/Resources/edit32.png" />
+                                    </Button>
+                                    <Button
+                                        Margin="3,1"
+                                        Command="{Binding DataContext.DeleteProjectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding .}"
+                                        Cursor="Hand"
+                                        ToolTip="{Binding Delete, Source={StaticResource LocalizationManager}}">
+                                        <Image
+                                            Width="16"
+                                            Height="16"
+                                            Source="/Apps/Resources/delete32.png" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
             <StackPanel
                 Margin="3"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
-                <Button Command="{Binding CancelCommand}" Content="关 闭" />
+                <Button Command="{Binding CancelCommand}" Content="{Binding Close, Source={StaticResource LocalizationManager}}" />
             </StackPanel>
         </StackPanel>
     </Grid>
