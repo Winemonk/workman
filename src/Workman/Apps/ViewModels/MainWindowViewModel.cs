@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Workman.Apps.Entities;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Repositories;
 using Workman.Core.Services;
@@ -117,7 +118,7 @@ namespace Workman.Apps.ViewModels
             bool success = await _workmanService.DeleteLog(workLog.Id);
             if (!success)
             {
-                MessageBox.Show("删除失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowError(string.Format(LocalizationManager.Instance.FailedMessage, LocalizationManager.Instance.Delete));
                 return;
             }
             WorkLogs.Remove(workLog);
@@ -181,10 +182,7 @@ namespace Workman.Apps.ViewModels
             TaskBarCommandExecuteProxy(ref _taskBarExitExecuting, () =>
             {
                 Application.Current.MainWindow.Activate();
-                MessageBoxResult messageBoxResult = MessageBox.Show("是否退出应用程序？",
-                                                                "提示",
-                                                                MessageBoxButton.YesNo,
-                                                                MessageBoxImage.Question);
+                MessageBoxResult messageBoxResult = MessageHelper.ShowYesNo(LocalizationManager.Instance.ExitAppHint);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     Environment.Exit(0);

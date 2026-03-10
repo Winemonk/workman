@@ -4,10 +4,12 @@ using Hearth.Prism.Toolkit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using Workman.Apps.Configs;
+using Workman.Apps.Helpers;
 using Workman.Apps.Views;
 
 namespace Workman
@@ -22,7 +24,13 @@ namespace Workman
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            //LocalizationCultureHelper.SetCulture("en");
+            if (CultureInfo.CurrentCulture.Name.Equals("zh-CN", StringComparison.OrdinalIgnoreCase))
+            {
+                CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                culture.DateTimeFormat.LongDatePattern = "yyyy年MM月dd日 dddd";
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
+            // LocalizationCultureHelper.SetCulture("en");
             var exePath = Process.GetCurrentProcess().MainModule?.FileName;
             var exeDirectory = Path.GetDirectoryName(exePath);
             if (!string.IsNullOrEmpty(exeDirectory))
@@ -30,7 +38,6 @@ namespace Workman
                 Directory.SetCurrentDirectory(exeDirectory);
             }
 
-            // 尝试获取互斥体
             bool createdNew;
             try
             {
@@ -38,19 +45,14 @@ namespace Workman
             }
             catch (AbandonedMutexException)
             {
-                // 如果上一个实例异常终止，Mutex 可能被遗弃，但我们仍可视为已有实例
                 createdNew = false;
             }
 
             if (!createdNew)
             {
-                // 已有实例在运行，退出当前进程
                 Shutdown();
                 return;
             }
-            // 禁用硬件加速
-            //RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-            // 正常启动应用程序
             base.OnStartup(e);
         }
 

@@ -48,11 +48,8 @@ namespace Workman.Apps.ViewModels
         [RelayCommand]
         private void Exit()
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show("是否退出应用程序？",
-                                                                "提示",
-                                                                MessageBoxButton.YesNo,
-                                                                MessageBoxImage.Question);
-            if (messageBoxResult != MessageBoxResult.Yes)
+            MessageBoxResult result = MessageHelper.ShowYesNo(LocalizationManager.Instance.ExitAppHint);
+            if (result != MessageBoxResult.Yes)
             {
                 return;
             }

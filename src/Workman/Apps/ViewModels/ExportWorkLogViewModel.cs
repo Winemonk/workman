@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Text;
 using System.Windows;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Services;
 
@@ -36,7 +37,7 @@ namespace Workman.Apps.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Output))
             {
-                MessageBox.Show("输出目录不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Output));
                 return;
             }
             DateTime start = new DateTime(StartDate.Year, StartDate.Month, StartDate.Day);
@@ -48,13 +49,12 @@ namespace Workman.Apps.ViewModels
             IEnumerable<WorkLog> workLogs = await _workmanService.GetLogs(start, end);
             if (!workLogs.Any())
             {
-                MessageBox.Show("所选时间段未查询到日志！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotFoundMessage, LocalizationManager.Instance.Log));
                 return;
             }
 
-            // 使用 using 确保资源释放
             using StreamWriter writer = new StreamWriter(Output, append: false, encoding: Encoding.UTF8);
-            writer.WriteLine("日期,项目,任务,内容,耗时");
+            writer.WriteLine($"{LocalizationManager.Instance.Date},{LocalizationManager.Instance.Iteration},{LocalizationManager.Instance.Task},{LocalizationManager.Instance.Content},{LocalizationManager.Instance.ElapsedTime}");
             foreach (WorkLog log in workLogs)
             {
                 WorkTask? task = await _workmanService.GetTask(log.TaskId);
@@ -78,7 +78,7 @@ namespace Workman.Apps.ViewModels
                 line.Append(log.ElapsedTime);
                 writer.WriteLine(line);
             }
-            MessageBox.Show("导出成功！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.SuccessMessage, LocalizationManager.Instance.ExportLog));
             RequestClose.Invoke();
         }
 

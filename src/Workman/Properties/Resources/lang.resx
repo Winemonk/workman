@@ -225,4 +225,49 @@
   <data name="str_save_and_close" xml:space="preserve">
     <value>保存并关闭</value>
   </data>
+  <data name="str_hint" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="str_error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="str_warn" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="str_info" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="str_exit_app_hint" xml:space="preserve">
+    <value>确认退出应用程序？</value>
+  </data>
+  <data name="str_failed_message" xml:space="preserve">
+    <value>{0}失败！</value>
+  </data>
+  <data name="str_item_failed_message" xml:space="preserve">
+    <value>{1}，第{0}项失败！</value>
+  </data>
+  <data name="str_success_message" xml:space="preserve">
+    <value>{0}成功！</value>
+  </data>
+  <data name="str_not_be_null_message" xml:space="preserve">
+    <value>{0}不能为空！</value>
+  </data>
+  <data name="str_item_not_be_null_message" xml:space="preserve">
+    <value>第{0}项：{1}不能为空！</value>
+  </data>
+  <data name="str_must_be_grater_then_zero_message" xml:space="preserve">
+    <value>{0}必须大于0！</value>
+  </data>
+  <data name="str_item_must_be_grater_then_zero_message" xml:space="preserve">
+    <value>第{0}项：{1}必须大于0！</value>
+  </data>
+  <data name="str_log" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="str_date" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="str_delete_iteration_hint" xml:space="preserve">
+    <value>项目删除后相关日志也会删除，确认删除项目？</value>
+  </data>
 </root>

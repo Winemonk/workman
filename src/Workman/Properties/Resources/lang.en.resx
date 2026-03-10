@@ -136,7 +136,7 @@
     <value>Add logs</value>
   </data>
   <data name="str_idx" xml:space="preserve">
-    <value>NO.</value>
+    <value>IDX</value>
   </data>
   <data name="str_task" xml:space="preserve">
     <value>Task</value>
@@ -224,5 +224,50 @@
   </data>
   <data name="str_save_and_close" xml:space="preserve">
     <value>Save and close</value>
+  </data>
+  <data name="str_hint" xml:space="preserve">
+    <value>Hint</value>
+  </data>
+  <data name="str_error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="str_warn" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="str_info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="str_exit_app_hint" xml:space="preserve">
+    <value>Are you sure you want to exit this application?</value>
+  </data>
+  <data name="str_failed_message" xml:space="preserve">
+    <value>{0} failed!</value>
+  </data>
+  <data name="str_item_failed_message" xml:space="preserve">
+    <value>{1}, item {0} failed!</value>
+  </data>
+  <data name="str_success_message" xml:space="preserve">
+    <value>{0} successfully!</value>
+  </data>
+  <data name="str_not_be_null_message" xml:space="preserve">
+    <value>The "{0}" cannot be left blank!</value>
+  </data>
+  <data name="str_item_not_be_null_message" xml:space="preserve">
+    <value>The "{1}" of item number {0} cannot be left blank!</value>
+  </data>
+  <data name="str_must_be_grater_then_zero_message" xml:space="preserve">
+    <value>The "{0}" must be greater than 0!</value>
+  </data>
+  <data name="str_item_must_be_grater_then_zero_message" xml:space="preserve">
+    <value>The "{1}" of item number {0} must be greater than 0!</value>
+  </data>
+  <data name="str_log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="str_date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="str_delete_iteration_hint" xml:space="preserve">
+    <value>After the project is deleted, the related logs will also be deleted. Are you sure to delete the project?</value>
   </data>
 </root>

@@ -133,11 +133,29 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 日期 的本地化字符串。
+        /// </summary>
+        internal static string str_date {
+            get {
+                return ResourceManager.GetString("str_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 删除 的本地化字符串。
         /// </summary>
         internal static string str_delete {
             get {
                 return ResourceManager.GetString("str_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 项目删除后相关日志也会删除，确认删除项目？ 的本地化字符串。
+        /// </summary>
+        internal static string str_delete_iteration_hint {
+            get {
+                return ResourceManager.GetString("str_delete_iteration_hint", resourceCulture);
             }
         }
         
@@ -196,11 +214,29 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 错误 的本地化字符串。
+        /// </summary>
+        internal static string str_error {
+            get {
+                return ResourceManager.GetString("str_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 退出程序 的本地化字符串。
         /// </summary>
         internal static string str_exit {
             get {
                 return ResourceManager.GetString("str_exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 确认退出应用程序？ 的本地化字符串。
+        /// </summary>
+        internal static string str_exit_app_hint {
+            get {
+                return ResourceManager.GetString("str_exit_app_hint", resourceCulture);
             }
         }
         
@@ -214,11 +250,65 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 {0}失败！ 的本地化字符串。
+        /// </summary>
+        internal static string str_failed_message {
+            get {
+                return ResourceManager.GetString("str_failed_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 提示 的本地化字符串。
+        /// </summary>
+        internal static string str_hint {
+            get {
+                return ResourceManager.GetString("str_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 序号 的本地化字符串。
         /// </summary>
         internal static string str_idx {
             get {
                 return ResourceManager.GetString("str_idx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 信息 的本地化字符串。
+        /// </summary>
+        internal static string str_info {
+            get {
+                return ResourceManager.GetString("str_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {1}，第{0}项失败！ 的本地化字符串。
+        /// </summary>
+        internal static string str_item_failed_message {
+            get {
+                return ResourceManager.GetString("str_item_failed_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 第{0}项：{1}必须大于0！ 的本地化字符串。
+        /// </summary>
+        internal static string str_item_must_be_grater_then_zero_message {
+            get {
+                return ResourceManager.GetString("str_item_must_be_grater_then_zero_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 第{0}项：{1}不能为空！ 的本地化字符串。
+        /// </summary>
+        internal static string str_item_not_be_null_message {
+            get {
+                return ResourceManager.GetString("str_item_not_be_null_message", resourceCulture);
             }
         }
         
@@ -237,6 +327,24 @@ namespace Workman.Properties.Resources {
         internal static string str_iteration_manage {
             get {
                 return ResourceManager.GetString("str_iteration_manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 日志 的本地化字符串。
+        /// </summary>
+        internal static string str_log {
+            get {
+                return ResourceManager.GetString("str_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0}必须大于0！ 的本地化字符串。
+        /// </summary>
+        internal static string str_must_be_grater_then_zero_message {
+            get {
+                return ResourceManager.GetString("str_must_be_grater_then_zero_message", resourceCulture);
             }
         }
         
@@ -282,6 +390,15 @@ namespace Workman.Properties.Resources {
         internal static string str_next_day {
             get {
                 return ResourceManager.GetString("str_next_day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0}不能为空！ 的本地化字符串。
+        /// </summary>
+        internal static string str_not_be_null_message {
+            get {
+                return ResourceManager.GetString("str_not_be_null_message", resourceCulture);
             }
         }
         
@@ -340,6 +457,15 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 {0}成功！ 的本地化字符串。
+        /// </summary>
+        internal static string str_success_message {
+            get {
+                return ResourceManager.GetString("str_success_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 任务 的本地化字符串。
         /// </summary>
         internal static string str_task {
@@ -381,6 +507,15 @@ namespace Workman.Properties.Resources {
         internal static string str_total_elapsed_time {
             get {
                 return ResourceManager.GetString("str_total_elapsed_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 警告 的本地化字符串。
+        /// </summary>
+        internal static string str_warn {
+            get {
+                return ResourceManager.GetString("str_warn", resourceCulture);
             }
         }
     }

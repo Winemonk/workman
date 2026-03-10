@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
 using System.Windows;
 using Workman.Apps.Entities;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Repositories;
 using Workman.Core.Services;
@@ -37,16 +38,16 @@ namespace Workman.Apps.ViewModels
         {
             if (SelectedProject == null)
             {
-                MessageBox.Show("项目不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Iteration));
                 return;
             }
             if (string.IsNullOrWhiteSpace(Content))
             {
-                MessageBox.Show("内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Content));
                 return;
             }
 
-            WorkTask workTask = await _workmanService.UpdateTask(_workTaskId, SelectedProject.Id, Content);
+            WorkTask? workTask = await _workmanService.UpdateTask(_workTaskId, SelectedProject.Id, Content);
 
             RequestClose.Invoke(ButtonResult.OK);
         }

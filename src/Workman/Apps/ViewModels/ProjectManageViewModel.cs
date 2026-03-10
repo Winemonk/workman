@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Services;
 
@@ -44,10 +45,7 @@ namespace Workman.Apps.ViewModels
             {
                 return;
             }
-            MessageBoxResult messageBoxResult = MessageBox.Show("项目删除后相关日志也会删除，确认删除项目？",
-                                                                "提示",
-                                                                MessageBoxButton.OKCancel,
-                                                                MessageBoxImage.Warning);
+            MessageBoxResult messageBoxResult = MessageHelper.ShowOKCancel(LocalizationManager.Instance.DeleteIterationHint);
             if(messageBoxResult != MessageBoxResult.OK)
             {
                 return;
@@ -55,10 +53,7 @@ namespace Workman.Apps.ViewModels
             bool success = await _workmanService.DeleteProject(project.Id);
             if (!success)
             {
-                MessageBox.Show("删除项目失败！",
-                                "提示",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                MessageHelper.ShowError(string.Format(LocalizationManager.Instance.FailedMessage, LocalizationManager.Instance.Delete));
                 return;
             }
             Projects.Remove(project);

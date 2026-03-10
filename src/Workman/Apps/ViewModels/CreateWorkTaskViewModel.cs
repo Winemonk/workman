@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
+using Microsoft.VisualBasic.Logging;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Workman.Apps.Entities;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Services;
 
@@ -39,7 +41,7 @@ namespace Workman.Apps.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(task.Content))
                 {
-                    MessageBox.Show($"项：{task.OrderId} 内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.ItemNotBeNullMessage, task.OrderId, LocalizationManager.Instance.Content));
                     return;
                 }
             }
@@ -49,7 +51,7 @@ namespace Workman.Apps.ViewModels
                 WorkTask? newTask = await _workmanService.CreateTask(task.Project.Id, task.Content);
                 if (newTask == null)
                 {
-                    MessageBox.Show($"添加任务：{task.OrderId}失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.ItemFailedMessage, task.OrderId, LocalizationManager.Instance.NewTask));
                     return;
                 }
             }

@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
+using Microsoft.VisualBasic.Logging;
 using System.Windows;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Services;
 
@@ -27,13 +29,13 @@ namespace Workman.Apps.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                MessageBox.Show("名称不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Name));
                 return;
             }
             WorkProject? newProject = await _workmanService.CreateProject(Name);
             if (newProject == null)
             {
-                MessageBox.Show("创建失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowError(string.Format(LocalizationManager.Instance.FailedMessage, LocalizationManager.Instance.NewIteration));
                 return;
             }
             RequestClose.Invoke(ButtonResult.OK);

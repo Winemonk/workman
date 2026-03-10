@@ -4,6 +4,7 @@ using Hearth.Prism.Toolkit;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Workman.Apps.Entities;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Services;
 
@@ -39,17 +40,17 @@ namespace Workman.Apps.ViewModels
                 }
                 if (log.ElapsedTime <= 0)
                 {
-                    MessageBox.Show($"项：{log.OrderId} 耗时必须大于0！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.ItemMustBeGraterThenZeroMessage, log.OrderId, LocalizationManager.Instance.ElapsedTime));
                     return;
                 }
                 if (log.Task == null)
                 {
-                    MessageBox.Show($"项：{log.OrderId} 任务不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.ItemNotBeNullMessage, log.OrderId, LocalizationManager.Instance.Task));
                     return;
                 }
                 if (string.IsNullOrEmpty(log.Content))
                 {
-                    MessageBox.Show($"项：{log.OrderId} 内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.ItemNotBeNullMessage, log.OrderId, LocalizationManager.Instance.Content));
                     return;
                 }
             }
@@ -59,7 +60,7 @@ namespace Workman.Apps.ViewModels
                 WorkLog? newLog = await _workmanService.CreateLog(_dateTime, log.Task.Id, log.Content, log.ElapsedTime);
                 if (newLog == null)
                 {
-                    MessageBox.Show($"添加日志：{log.OrderId}失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageHelper.ShowError(string.Format(LocalizationManager.Instance.ItemFailedMessage, log.OrderId, LocalizationManager.Instance.AddLog));
                     return;
                 }
             }
