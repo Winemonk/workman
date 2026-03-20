@@ -55,6 +55,18 @@ namespace Workman.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
 
+                    b.Property<DateTime?>("ArchivedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_archived_time");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_created_time");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_is_archived");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -71,6 +83,18 @@ namespace Workman.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
+
+                    b.Property<DateTime?>("ArchivedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_archived_time");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_created_time");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_is_archived");
 
                     b.Property<string>("Name")
                         .IsRequired()

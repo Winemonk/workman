@@ -77,7 +77,7 @@ namespace Workman.Apps.ViewModels
 
         public async void OnDialogOpened(IDialogParameters parameters)
         {
-            IEnumerable<WorkProject> projects = await _workmanService.GetProjects();
+            IEnumerable<WorkProject> projects = await _workmanService.GetNotArchivedProjects();
             Projects = projects.ToList();
             WorkTasks = new ObservableCollection<CreateWorkTaskVO>();
             WorkTasks.CollectionChanged += WorkLogs_CollectionChanged;
@@ -85,6 +85,10 @@ namespace Workman.Apps.ViewModels
 
         private void WorkLogs_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            for (int i = 0; i < WorkTasks.Count; i++)
+            {
+                WorkTasks[i].OrderId = i;
+            }
             if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 return;
@@ -92,7 +96,6 @@ namespace Workman.Apps.ViewModels
             foreach (CreateWorkTaskVO item in e.NewItems ?? Array.Empty<CreateWorkTaskVO>())
             {
                 item.Project = _memoryProject;
-                item.OrderId = WorkTasks.Count;
                 item.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(CreateWorkTaskVO.Project)

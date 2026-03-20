@@ -16,6 +16,7 @@ namespace Workman.Apps.Helpers
         private const int WM_WINDOWPOSCHANGING = 0x0046;
         private const uint SWP_NOZORDER = 0x0004;
         private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        private const int WM_SPAWN_WORKER = 0x052C;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct WINDOWPOS
@@ -43,6 +44,31 @@ namespace Workman.Apps.Helpers
 
         [DllImport("user32.dll")]
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SendMessageTimeout(
+            IntPtr hWnd,
+            int Msg,
+            IntPtr wParam,
+            IntPtr lParam,
+            SendMessageTimeoutFlags flags,
+            uint timeout,
+            out IntPtr lpdwResult);
+        enum SendMessageTimeoutFlags : uint
+        {
+            SMTO_ABORTIFHUNG = 0x0002
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
         /// <summary>
         /// 将窗口停靠至桌面右上角
@@ -94,6 +120,28 @@ namespace Workman.Apps.Helpers
         {
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
             IntPtr progman = FindWindow("Progman", null);
+            SendMessageTimeout(progman,
+                WM_SPAWN_WORKER,
+                IntPtr.Zero,
+                IntPtr.Zero,
+                SendMessageTimeoutFlags.SMTO_ABORTIFHUNG,
+                100,
+                out _);
+            IntPtr workerW = IntPtr.Zero;
+            EnumWindows((hwnd, lParam) =>
+            {
+                IntPtr shell = FindWindowEx(hwnd, IntPtr.Zero, "SHELLDLL_DefView", null);
+                if (shell != IntPtr.Zero)
+                {
+                    workerW = FindWindowEx(IntPtr.Zero, hwnd, "WorkerW", null);
+                }
+                return true;
+            }, IntPtr.Zero);
+
+            if (workerW != IntPtr.Zero)
+            {
+                //SetParent(hwnd, workerW);
+            }
             SetWindowLongPtr(hwnd, GWLP_HWNDPARENT, progman);
             HwndSource source = HwndSource.FromHwnd(hwnd);
             source.AddHook(WndProc);

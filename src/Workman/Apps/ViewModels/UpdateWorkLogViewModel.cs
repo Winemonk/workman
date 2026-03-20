@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
 using System.Windows;
 using Workman.Apps.Entities;
+using Workman.Apps.Helpers;
 using Workman.Core.Entities;
 using Workman.Core.Repositories;
 using Workman.Core.Services;
@@ -29,6 +30,9 @@ namespace Workman.Apps.ViewModels
 
         [ObservableProperty]
         private float _elapsedTime = 1;
+
+        [ObservableProperty]
+        private DateTime _date;
 
         [ObservableProperty]
         private string _content = string.Empty;
@@ -75,24 +79,24 @@ namespace Workman.Apps.ViewModels
         {
             if (SelectedTask == null)
             {
-                MessageBox.Show("任务不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Task));
                 return;
             }
             if (ElapsedTime <= 0)
             {
-                MessageBox.Show("耗时必须大于0！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.MustBeGraterThenZeroMessage, LocalizationManager.Instance.ElapsedTime));
                 return;
             }
             if (string.IsNullOrEmpty(Content))
             {
-                MessageBox.Show("内容不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.NotBeNullMessage, LocalizationManager.Instance.Content));
                 return;
             }
 
-            WorkLog? workLog = await _workmanService.UpdateLog(_workLogId, SelectedTask.Id, Content, ElapsedTime);
+            WorkLog? workLog = await _workmanService.UpdateLog(_workLogId, SelectedTask.Id, Content, ElapsedTime, Date);
             if (workLog == null)
             {
-                MessageBox.Show("更新日志失败！", "提示", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.FailedMessage, LocalizationManager.Instance.UpdateLog));
                 return;
             }
             RequestClose.Invoke(ButtonResult.OK);
@@ -128,35 +132,43 @@ namespace Workman.Apps.ViewModels
                 RequestClose.Invoke(ButtonResult.Cancel);
                 return;
             }
-
             List<WorkTask> workTasks = await _workmanService.GetTasks();
-            List<WorkTaskVO> workTaskVOs = new List<WorkTaskVO>();
+            List<WorkTaskVO> taskVOs = new List<WorkTaskVO>();
+            IEnumerable<WorkProject> projects = await _workmanService.GetProjects();
+            List<WorkProjectVO> projectVOs = new List<WorkProjectVO>();
+            foreach (WorkProject project in projects)
+            {
+                projectVOs.Add(new WorkProjectVO
+                {
+                    Id = project.Id,
+                    ArchivedTime = project.ArchivedTime,
+                    CreatedTime = project.CreatedTime,
+                    Name = project.Name,
+                    IsArchived = project.IsArchived,
+                });
+            }
+            int orderId = 1;
             foreach (WorkTask wt in workTasks)
             {
                 float taskElapsedTime = await _workmanService.GetTaskElapsedTime(wt.Id);
                 WorkTaskVO taskVO = new WorkTaskVO
                 {
+                    OrderId = orderId++,
                     Id = wt.Id,
+                    ArchivedTime = wt.ArchivedTime,
+                    CreatedTime = wt.CreatedTime,
                     Name = wt.Name,
+                    IsArchived = wt.IsArchived,
                     TotalElapsedTime = taskElapsedTime,
+                    Project = projectVOs.FirstOrDefault(p => p.Id == wt.ProjectId)!,
                 };
-                await _workmanService.GetProject(wt.ProjectId).ContinueWith(projectTask =>
-                {
-                    if (projectTask.Result != null)
-                    {
-                        taskVO.Project = new WorkProjectVO
-                        {
-                            Id = projectTask.Result.Id,
-                            Name = projectTask.Result.Name
-                        };
-                    }
-                });
-                workTaskVOs.Add(taskVO);
+                taskVOs.Add(taskVO);
             }
 
-            Tasks = workTaskVOs;
+            Tasks = taskVOs;
             SelectedTask = Tasks.FirstOrDefault(t => t.Id == workLog.TaskId);
             ElapsedTime = workLog.ElapsedTime;
+            Date = workLog.Date;
         }
     }
 }

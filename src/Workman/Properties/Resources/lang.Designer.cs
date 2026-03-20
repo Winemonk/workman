@@ -19,7 +19,7 @@ namespace Workman.Properties.Resources {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class lang {
@@ -88,6 +88,24 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 归档 的本地化字符串。
+        /// </summary>
+        internal static string str_archive {
+            get {
+                return ResourceManager.GetString("str_archive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 归档时间 的本地化字符串。
+        /// </summary>
+        internal static string str_archived_time {
+            get {
+                return ResourceManager.GetString("str_archived_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 开机自启 的本地化字符串。
         /// </summary>
         internal static string str_auto_startup {
@@ -133,6 +151,15 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 创建时间 的本地化字符串。
+        /// </summary>
+        internal static string str_created_time {
+            get {
+                return ResourceManager.GetString("str_created_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 日期 的本地化字符串。
         /// </summary>
         internal static string str_date {
@@ -160,11 +187,29 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 确认删除日志？ 的本地化字符串。
+        /// </summary>
+        internal static string str_delete_log_hint {
+            get {
+                return ResourceManager.GetString("str_delete_log_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 删除行 的本地化字符串。
         /// </summary>
         internal static string str_delete_row {
             get {
                 return ResourceManager.GetString("str_delete_row", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 任务删除后相关日志也会删除，确认删除任务？ 的本地化字符串。
+        /// </summary>
+        internal static string str_delete_task_hint {
+            get {
+                return ResourceManager.GetString("str_delete_task_hint", resourceCulture);
             }
         }
         
@@ -340,6 +385,15 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 日志管理 的本地化字符串。
+        /// </summary>
+        internal static string str_log_manage {
+            get {
+                return ResourceManager.GetString("str_log_manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0}必须大于0！ 的本地化字符串。
         /// </summary>
         internal static string str_must_be_grater_then_zero_message {
@@ -439,6 +493,24 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 提醒间隔（分钟） 的本地化字符串。
+        /// </summary>
+        internal static string str_reminder_interval {
+            get {
+                return ResourceManager.GetString("str_reminder_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 提醒开始时间 的本地化字符串。
+        /// </summary>
+        internal static string str_reminder_of_start_time {
+            get {
+                return ResourceManager.GetString("str_reminder_of_start_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 保存并关闭 的本地化字符串。
         /// </summary>
         internal static string str_save_and_close {
@@ -493,6 +565,15 @@ namespace Workman.Properties.Resources {
         }
         
         /// <summary>
+        ///   查找类似 今天还没有工作日志，记得记录哦！ 的本地化字符串。
+        /// </summary>
+        internal static string str_toast_message {
+            get {
+                return ResourceManager.GetString("str_toast_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 今天 的本地化字符串。
         /// </summary>
         internal static string str_today {
@@ -507,6 +588,42 @@ namespace Workman.Properties.Resources {
         internal static string str_total_elapsed_time {
             get {
                 return ResourceManager.GetString("str_total_elapsed_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 开启提醒 的本地化字符串。
+        /// </summary>
+        internal static string str_turn_on_reminder {
+            get {
+                return ResourceManager.GetString("str_turn_on_reminder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 更新迭代 的本地化字符串。
+        /// </summary>
+        internal static string str_update_iteration {
+            get {
+                return ResourceManager.GetString("str_update_iteration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 更新日志 的本地化字符串。
+        /// </summary>
+        internal static string str_update_log {
+            get {
+                return ResourceManager.GetString("str_update_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 更新任务 的本地化字符串。
+        /// </summary>
+        internal static string str_update_task {
+            get {
+                return ResourceManager.GetString("str_update_task", resourceCulture);
             }
         }
         

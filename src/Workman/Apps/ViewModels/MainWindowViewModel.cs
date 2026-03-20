@@ -99,13 +99,13 @@ namespace Workman.Apps.ViewModels
         [RelayCommand]
         private void ProjectManage()
         {
-            _dialogService.ShowDialog("ProjectManageView");
+            _dialogService.ShowDialog("ManageWorkProjectView");
         }
 
         [RelayCommand]
         private void TaskManage()
         {
-            _dialogService.ShowDialog("TaskManageView");
+            _dialogService.ShowDialog("ManageWorkTaskView");
         }
 
         [RelayCommand]
@@ -211,8 +211,6 @@ namespace Workman.Apps.ViewModels
 
         private async Task RefreshDateWorkLog(DateTime dateTime)
         {
-            List<WorkProject> projects = await _workmanService.GetProjects();
-            List<WorkTask> tasks = await _workmanService.GetTasks();
             DateTime day = new DateTime(dateTime.Year,dateTime.Month,dateTime.Day);
             List<WorkLog> logs = await _workmanService.GetLogs(day);
 
@@ -231,15 +229,21 @@ namespace Workman.Apps.ViewModels
                     WorkTaskVO taskVO = new WorkTaskVO
                     {
                         Id = task.Id,
-                        Name = task.Name
+                        ArchivedTime = task.ArchivedTime,
+                        CreatedTime = task.CreatedTime,
+                        Name = task.Name,
+                        IsArchived = task.IsArchived,
                     };
-                    WorkProject? workProject = await _workmanService.GetProject(task.ProjectId);
-                    if(workProject != null)
+                    WorkProject? project = await _workmanService.GetProject(task.ProjectId);
+                    if(project != null)
                     {
                         taskVO.Project = new WorkProjectVO
                         {
-                            Id = workProject.Id,
-                            Name = workProject.Name
+                            Id = project.Id,
+                            ArchivedTime = project.ArchivedTime,
+                            CreatedTime = project.CreatedTime,
+                            Name = project.Name,
+                            IsArchived = project.IsArchived,
                         };
                     }
                     logVO.Task = taskVO;

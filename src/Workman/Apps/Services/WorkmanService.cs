@@ -10,10 +10,9 @@ namespace Workman.Apps.Services
     [RegisterService(ServiceType = typeof(IWorkmanService), Lifetime = ServiceLifetime.Scoped)]
     internal class WorkmanService : IWorkmanService
     {
+        private readonly IRepository<WorkLog> _logRepository;
         private readonly IRepository<WorkProject> _projectRepository;
         private readonly IRepository<WorkTask> _taskRepository;
-        private readonly IRepository<WorkLog> _logRepository;
-
         public WorkmanService(IRepository<WorkProject> projectRepository,
                               IRepository<WorkTask> taskRepository,
                               IRepository<WorkLog> logRepository)
@@ -38,7 +37,9 @@ namespace Workman.Apps.Services
         {
             return _projectRepository.Insert(new WorkProject
             {
-                Name = name
+                Name = name,
+                CreatedTime = DateTime.Now,
+                IsArchived = false,
             });
         }
 
@@ -47,7 +48,9 @@ namespace Workman.Apps.Services
             return _taskRepository.Insert(new WorkTask
             {
                 ProjectId = projectId,
-                Name = content
+                Name = content,
+                CreatedTime = DateTime.Now,
+                IsArchived = false,
             });
         }
 
@@ -71,6 +74,12 @@ namespace Workman.Apps.Services
             return _logRepository.Query(logId);
         }
 
+        public async Task<List<WorkLog>> GetLogs(int taskId)
+        {
+            IEnumerable<WorkLog> workLogs = await _logRepository.QueryRange(q => q.Where(l => l.TaskId == taskId).OrderBy(l => l.Date));
+            return workLogs.ToList();
+        }
+
         public async Task<List<WorkLog>> GetLogs(DateTime date)
         {
             IEnumerable<WorkLog> workLogs = await _logRepository.QueryRange(q => q.Where(l => l.Date >= date && l.Date < date.AddDays(1)).OrderBy(l => l.Date));
@@ -88,12 +97,6 @@ namespace Workman.Apps.Services
             return _projectRepository.Query(projectId);
         }
 
-        public async Task<int> GetProjectTaskCount(int projectId)
-        {
-            IEnumerable<WorkTask> tasks = await _taskRepository.QueryRange(q => q.Where(t => t.ProjectId == projectId));
-            return tasks.Count();
-        }
-
         public async Task<float> GetProjectElapsedTime(int projectId)
         {
             IEnumerable<WorkTask> tasks = await _taskRepository.QueryRange(q => q.Where(t => t.ProjectId == projectId));
@@ -108,6 +111,17 @@ namespace Workman.Apps.Services
             return workProjects.ToList();
         }
 
+        public async Task<List<WorkProject>> GetNotArchivedProjects()
+        {
+            IEnumerable<WorkProject> workProjects = await _projectRepository.QueryRange(q => q.Where(p => !p.IsArchived));
+            return workProjects.ToList();
+        }
+
+        public async Task<int> GetProjectTaskCount(int projectId)
+        {
+            IEnumerable<WorkTask> tasks = await _taskRepository.QueryRange(q => q.Where(t => t.ProjectId == projectId));
+            return tasks.Count();
+        }
         public Task<WorkTask?> GetTask(int taskId)
         {
             return _taskRepository.Query(taskId);
@@ -125,13 +139,25 @@ namespace Workman.Apps.Services
             return workTasks.ToList();
         }
 
+        public async Task<List<WorkTask>> GetNotArchivedTasks()
+        {
+            IEnumerable<WorkTask> workTasks = await _taskRepository.QueryRange(q => q.Where(t => !t.IsArchived));
+            return workTasks.ToList();
+        }
+
         public async Task<List<WorkTask>> GetTasks(int projectId)
         {
             IEnumerable<WorkTask> workTasks = await _taskRepository.QueryRange(q => q.Where(t => t.ProjectId == projectId));
             return workTasks.ToList();
         }
 
-        public async Task<WorkLog?> UpdateLog(int logId, int taskId, string content, float elapsedTime)
+        public async Task<List<WorkTask>> GetNotArchivedTasks(int projectId)
+        {
+            IEnumerable<WorkTask> workTasks = await _taskRepository.QueryRange(q => q.Where(t => t.ProjectId == projectId && !t.IsArchived));
+            return workTasks.ToList();
+        }
+
+        public async Task<WorkLog?> UpdateLog(int logId, int taskId, string content, float elapsedTime, DateTime date)
         {
             WorkLog? workLog = await _logRepository.Query(logId);
             if (workLog == null)
@@ -141,23 +167,41 @@ namespace Workman.Apps.Services
             workLog.TaskId = taskId;
             workLog.ElapsedTime = elapsedTime;
             workLog.Content = content;
+            workLog.Date = date;
             await _logRepository.Update(workLog);
             return workLog;
         }
 
-        public async Task<WorkProject?> UpdateProject(int projectId, string name)
+        public async Task<WorkProject?> UpdateProject(int projectId, string name, bool isArchived)
         {
-            WorkProject? workProject = await _projectRepository.Query(projectId);
-            if (workProject == null)
+            WorkProject? project = await _projectRepository.Query(projectId);
+            if (project == null)
             {
                 return null;
             }
-            workProject.Name = name;
-            await _projectRepository.Update(workProject);
-            return workProject;
+            project.Name = name;
+            if(project.IsArchived != isArchived)
+            {
+                project.IsArchived = isArchived;
+                if (isArchived)
+                {
+                    project.ArchivedTime = DateTime.Now;
+                    List<WorkTask> tasks = await GetTasks(projectId);
+                    foreach (WorkTask task in tasks)
+                    {
+                        WorkTask? updatedTask = await UpdateTask(task.Id, task.ProjectId, task.Name, true);
+                    }
+                }
+                else
+                {
+                    project.ArchivedTime = null;
+                }
+            }
+            WorkProject updatedProject = await _projectRepository.Update(project);
+            return updatedProject;
         }
 
-        public async Task<WorkTask?> UpdateTask(int taskId, int projectId, string content)
+        public async Task<WorkTask?> UpdateTask(int taskId, int projectId, string content, bool isArchived)
         {
             WorkTask? workTask = await _taskRepository.Query(taskId);
             if(workTask == null)
@@ -166,6 +210,18 @@ namespace Workman.Apps.Services
             }
             workTask.ProjectId = projectId;
             workTask.Name = content;
+            if (workTask.IsArchived != isArchived)
+            {
+                workTask.IsArchived = isArchived;
+                if (isArchived)
+                {
+                    workTask.ArchivedTime = DateTime.Now;
+                }
+                else
+                {
+                    workTask.ArchivedTime = null;
+                }
+            }
             await _taskRepository.Update(workTask);
             return workTask;
         }

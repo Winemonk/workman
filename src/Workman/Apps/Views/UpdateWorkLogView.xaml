@@ -6,18 +6,26 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Width="200"
+    Width="360"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
         <StackPanel Orientation="Vertical">
+            <Label Content="{Binding UpdateLog, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+            <Label Content="{Binding Date, Source={StaticResource LocalizationManager}}" />
+            <DatePicker
+                Margin="3"
+                Background="Transparent"
+                BorderThickness="0"
+                SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long" />
             <Label Content="{Binding Task, Source={StaticResource LocalizationManager}}" />
             <ComboBox
                 Margin="3"
                 ItemsSource="{Binding Tasks}"
                 SelectedItem="{Binding SelectedTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="{Binding Content, Source={StaticResource LocalizationManager}}" />
-            <TextBox Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Margin="3" Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="{Binding ElapsedTime, Source={StaticResource LocalizationManager}}" />
             <DockPanel Margin="3">
                 <UniformGrid DockPanel.Dock="Right" Rows="2">

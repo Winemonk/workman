@@ -1,11 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
-using System.Windows;
 using Workman.Apps.Entities;
 using Workman.Apps.Helpers;
 using Workman.Core.Entities;
-using Workman.Core.Repositories;
 using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
@@ -22,13 +20,16 @@ namespace Workman.Apps.ViewModels
         }
 
         [ObservableProperty]
-        private WorkProject? _selectedProject;
+        private WorkProjectVO? _selectedProject;
 
         [ObservableProperty]
-        private List<WorkProject> _projects;
+        private List<WorkProjectVO> _projects;
 
         [ObservableProperty]
         private string _content = string.Empty;
+
+        [ObservableProperty]
+        private bool _isArchived;
 
         public DialogCloseListener RequestClose { get; }
 
@@ -47,8 +48,12 @@ namespace Workman.Apps.ViewModels
                 return;
             }
 
-            WorkTask? workTask = await _workmanService.UpdateTask(_workTaskId, SelectedProject.Id, Content);
-
+            WorkTask? workTask = await _workmanService.UpdateTask(_workTaskId, SelectedProject.Id, Content, IsArchived);
+            if (workTask == null)
+            {
+                MessageHelper.ShowInfo(string.Format(LocalizationManager.Instance.FailedMessage, LocalizationManager.Instance.UpdateTask));
+                return;
+            }
             RequestClose.Invoke(ButtonResult.OK);
         }
 
@@ -70,7 +75,7 @@ namespace Workman.Apps.ViewModels
 
         public async void OnDialogOpened(IDialogParameters parameters)
         {
-            bool success = parameters.TryGetValue("taskId", out _workTaskId);
+            bool success = parameters.TryGetValue("workTaskId", out _workTaskId);
             if (!success)
             {
                 RequestClose.Invoke(ButtonResult.Cancel);
@@ -83,10 +88,18 @@ namespace Workman.Apps.ViewModels
                 return;
             }
             IEnumerable<WorkProject> projects = await _workmanService.GetProjects();
-            Projects = projects.ToList();
-           
-            SelectedProject = Projects.FirstOrDefault(p=>p.Id == workTask.ProjectId);
+            Projects = projects.Select(p => new WorkProjectVO
+            {
+                Id = p.Id,
+                ArchivedTime = p.ArchivedTime,
+                CreatedTime = p.CreatedTime,
+                IsArchived = p.IsArchived,
+                Name = p.Name,
+            }).ToList();
+
+            SelectedProject = Projects.FirstOrDefault(p => p.Id == workTask.ProjectId);
             Content = workTask.Name;
+            IsArchived = workTask.IsArchived;
         }
     }
 }

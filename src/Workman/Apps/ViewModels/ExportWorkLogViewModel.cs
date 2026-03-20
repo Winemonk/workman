@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Hearth.Prism.Toolkit;
 using Microsoft.Win32;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -30,6 +31,9 @@ namespace Workman.Apps.ViewModels
         [ObservableProperty]
         private DateTime _endDate;
 
+        [ObservableProperty]
+        private List<CheckWorkProjectVO> _projects;
+
         public DialogCloseListener RequestClose { get; }
 
         [RelayCommand]
@@ -53,16 +57,18 @@ namespace Workman.Apps.ViewModels
                 return;
             }
 
+            List<WorkTask> tasks = await _workmanService.GetTasks();
+
             using StreamWriter writer = new StreamWriter(Output, append: false, encoding: Encoding.UTF8);
             writer.WriteLine($"{LocalizationManager.Instance.Date},{LocalizationManager.Instance.Iteration},{LocalizationManager.Instance.Task},{LocalizationManager.Instance.Content},{LocalizationManager.Instance.ElapsedTime}");
             foreach (WorkLog log in workLogs)
             {
-                WorkTask? task = await _workmanService.GetTask(log.TaskId);
-                if(task == null)
+                WorkTask? task = tasks.FirstOrDefault(t => t.Id == log.TaskId);
+                if (task == null)
                 {
                     continue;
                 }
-                WorkProject? project = await _workmanService.GetProject(task.ProjectId);
+                CheckWorkProjectVO? project = Projects.FirstOrDefault(p => p.Id == task.ProjectId && p.IsChecked);
                 if (project == null)
                 {
                     continue;
@@ -133,6 +139,18 @@ namespace Workman.Apps.ViewModels
             Output = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{StartDate:yyyyMMdd}-{EndDate:yyyyMMdd}.csv");
             StartDate = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
             EndDate = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            List<WorkProject> projects = await _workmanService.GetProjects();
+            IEnumerable<CheckWorkProjectVO> checkProjects = projects.Select(project => new CheckWorkProjectVO
+            {
+                Id = project.Id,
+                IsChecked = true,
+                Name = project.Name,
+                IsArchived = project.IsArchived,
+                ArchivedTime = project.ArchivedTime,
+                CreatedTime = project.CreatedTime,
+            });
+            Projects = checkProjects.ToList();
         }
 
         private string GetCsvValue(string? value)

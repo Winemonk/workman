@@ -29,6 +29,9 @@ namespace Workman.Apps
         // 示例属性
         public string Log => this["str_log"];
         public string AddLog => this["str_add_log"];
+        public string UpdateLog => this["str_update_log"];
+        public string LogManage => this["str_log_manage"];
+        public string Archive => this["str_archive"];
         public string All => this["str_all"];
         public string AppSetting => this["str_app_setting"];
         public string Cancel => this["str_cancel"];
@@ -46,8 +49,10 @@ namespace Workman.Apps
         public string IterationManage => this["str_iteration_manage"];
         public string Name => this["str_name"];
         public string NewIteration => this["str_new_iteration"];
+        public string UpdateIteration => this["str_update_iteration"];
         public string NewRow => this["str_new_row"];
         public string NewTask => this["str_new_task"];
+        public string UpdateTask => this["str_update_task"];
         public string NextDay => this["str_next_day"];
         public string Operation => this["str_operation"];
         public string PrevDay => this["str_prev_day"];
@@ -70,6 +75,14 @@ namespace Workman.Apps
         public string Info => this["str_info"];
         public string ExitAppHint => this["str_exit_app_hint"];
         public string DeleteIterationHint => this["str_delete_iteration_hint"];
+        public string DeleteTaskHint => this["str_delete_task_hint"];
+        public string DeleteLogHint => this["str_delete_log_hint"];
+        public string CreatedTime => this["str_created_time"];
+        public string ArchivedTime => this["str_archived_time"];
+        public string ToastMessage => this["str_toast_message"];
+        public string TurnOnReminder => this["str_turn_on_reminder"];
+        public string ReminderOfStartTime => this["str_reminder_of_start_time"];
+        public string ReminderInterval => this["str_reminder_interval"];
 
         /// <summary>
         /// {0}失败！

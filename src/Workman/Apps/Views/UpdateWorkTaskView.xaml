@@ -6,29 +6,32 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Width="200"
+    Width="360"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label Content="{Binding Iteration, Source={StaticResource LocalizationManager}}" />
-            <ComboBox
-                Margin="3"
-                DisplayMemberPath="Name"
-                ItemsSource="{Binding Projects}"
-                SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="{Binding Name, Source={StaticResource LocalizationManager}}" />
-            <TextBox
-                Margin="3"
-                Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextWrapping="Wrap" />
-            <StackPanel
-                Margin="3"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
-                <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
-            </StackPanel>
+    <StackPanel Orientation="Vertical">
+        <Label Content="{Binding UpdateTask, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+        <Label Content="{Binding Iteration, Source={StaticResource LocalizationManager}}" />
+        <ComboBox
+            Margin="3"
+            ItemsSource="{Binding Projects}"
+            SelectedItem="{Binding SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Content="{Binding Name, Source={StaticResource LocalizationManager}}" />
+        <TextBox
+            Margin="3"
+            Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+        <CheckBox
+            Margin="3"
+            VerticalContentAlignment="Center"
+            Content="{Binding Archive, Source={StaticResource LocalizationManager}}"
+            IsChecked="{Binding IsArchived}" />
+        <StackPanel
+            Margin="3"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+            <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

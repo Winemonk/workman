@@ -15,6 +15,9 @@ namespace Workman.Apps.Entities
         private WorkTaskVO _task;
 
         [ObservableProperty]
+        private string _content;
+
+        [ObservableProperty]
         private DateTime _date;
 
         [ObservableProperty]

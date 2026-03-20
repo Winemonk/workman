@@ -9,13 +9,13 @@ using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
-    [RegisterDialog("TaskManageView")]
-    internal partial class TaskManageViewModel : ObservableObject, IDialogAware
+    [RegisterDialog("ManageWorkTaskView")]
+    internal partial class ManageWorkTaskViewModel : ObservableObject, IDialogAware
     {
         private readonly IWorkmanService _workmanService;
         private readonly IDialogService _dialogService;
 
-        public TaskManageViewModel(IWorkmanService workmanService, IDialogService dialogService)
+        public ManageWorkTaskViewModel(IWorkmanService workmanService, IDialogService dialogService)
         {
             _workmanService = workmanService;
             _dialogService = dialogService;
@@ -55,7 +55,28 @@ namespace Workman.Apps.ViewModels
             _dialogService.ShowDialog("UpdateWorkTaskView", 
                                       new DialogParameters
                                       {
-                                          {"taskId", task.Id }
+                                          {"workTaskId", task.Id }
+                                      },
+                                      async dr =>
+                                      {
+                                          if (dr.Result == ButtonResult.OK)
+                                          {
+                                              await RefreshTasks(SelectedProject.Id);
+                                          }
+                                      });
+        }
+
+        [RelayCommand]
+        private void ManageLog(WorkTaskVO? task)
+        {
+            if (task == null)
+            {
+                return;
+            }
+            _dialogService.ShowDialog("ManageWorkLogView", 
+                                      new DialogParameters
+                                      {
+                                          {"workTaskId", task.Id }
                                       },
                                       async dr =>
                                       {
@@ -73,10 +94,7 @@ namespace Workman.Apps.ViewModels
             {
                 return;
             }
-            MessageBoxResult messageBoxResult = MessageBox.Show("任务删除后相关日志也会删除，确认删除项目？",
-                                                                "提示",
-                                                                MessageBoxButton.OKCancel,
-                                                                MessageBoxImage.Warning);
+            MessageBoxResult messageBoxResult = MessageHelper.ShowOKCancel(LocalizationManager.Instance.DeleteTaskHint);
             if (messageBoxResult != MessageBoxResult.OK)
             {
                 return;
@@ -122,7 +140,15 @@ namespace Workman.Apps.ViewModels
                     Name = LocalizationManager.Instance.All,
                 },
             };
-            SelectedProject = Projects.LastOrDefault();
+            bool success = parameters.TryGetValue("workProjectId", out int projectId);
+            if (!success)
+            {
+                SelectedProject = Projects.LastOrDefault()!;
+            }
+            else
+            {
+                SelectedProject = Projects.FirstOrDefault(p => p.Id == projectId)!;
+            }
             if (SelectedProject != null)
             {
                 await RefreshTasks(SelectedProject.Id);
@@ -135,6 +161,19 @@ namespace Workman.Apps.ViewModels
                 ? await _workmanService.GetTasks()
                 : await _workmanService.GetTasks(projectId);
             List<WorkTaskVO> taskVOs = new List<WorkTaskVO>();
+            IEnumerable<WorkProject> projects = await _workmanService.GetProjects();
+            List<WorkProjectVO> projectVOs = new List<WorkProjectVO>();
+            foreach (WorkProject project in projects)
+            {
+                projectVOs.Add(new WorkProjectVO
+                {
+                    Id = project.Id,
+                    ArchivedTime = project.ArchivedTime,
+                    CreatedTime = project.CreatedTime,
+                    Name = project.Name,
+                    IsArchived = project.IsArchived,
+                });
+            }
             int orderId = 1;
             foreach (WorkTask wt in workTasks)
             {
@@ -143,20 +182,13 @@ namespace Workman.Apps.ViewModels
                 {
                     OrderId = orderId++,
                     Id = wt.Id,
+                    ArchivedTime = wt.ArchivedTime,
+                    CreatedTime = wt.CreatedTime,
                     Name = wt.Name,
+                    IsArchived = wt.IsArchived,
                     TotalElapsedTime = taskElapsedTime,
+                    Project = projectVOs.FirstOrDefault(p => p.Id == wt.ProjectId)!,
                 };
-                await _workmanService.GetProject(wt.ProjectId).ContinueWith(projectTask =>
-                {
-                    if (projectTask.Result != null)
-                    {
-                        taskVO.Project = new WorkProjectVO
-                        {
-                            Id = projectTask.Result.Id,
-                            Name = projectTask.Result.Name
-                        };
-                    }
-                });
                 taskVOs.Add(taskVO);
             }
             Tasks = new ObservableCollection<WorkTaskVO>(taskVOs);

@@ -9,13 +9,13 @@ using Workman.Core.Services;
 
 namespace Workman.Apps.ViewModels
 {
-    [RegisterDialog("ProjectManageView")]
-    internal partial class ProjectManageViewModel : ObservableObject, IDialogAware
+    [RegisterDialog("ManageWorkProjectView")]
+    internal partial class ManageWorkProjectViewModel : ObservableObject, IDialogAware
     {
         private readonly IWorkmanService _workmanService;
         private readonly IDialogService _dialogService;
 
-        public ProjectManageViewModel(IDialogService dialogService, IWorkmanService workmanService)
+        public ManageWorkProjectViewModel(IDialogService dialogService, IWorkmanService workmanService)
         {
             _dialogService = dialogService;
             _workmanService = workmanService;
@@ -32,6 +32,38 @@ namespace Workman.Apps.ViewModels
             _dialogService.ShowDialog("CreateWorkProjectView", async dr =>
             {
                 if(dr.Result == ButtonResult.OK)
+                {
+                    await RefreshProjects();
+                }
+            });
+        }
+
+        [RelayCommand]
+        private async Task ManageTask(WorkProjectVO? project)
+        {
+            if (project == null)
+            {
+                return;
+            }
+            _dialogService.ShowDialog("ManageWorkTaskView", new DialogParameters { { "workProjectId", project.Id } }, async dr =>
+            {
+                if (dr.Result == ButtonResult.OK)
+                {
+                    await RefreshProjects();
+                }
+            });
+        }
+
+        [RelayCommand]
+        private async Task EditProject(WorkProjectVO? project)
+        {
+            if (project == null)
+            {
+                return;
+            }
+            _dialogService.ShowDialog("UpdateWorkProjectView", new DialogParameters { { "workProjectId", project.Id } }, async dr =>
+            {
+                if (dr.Result == ButtonResult.OK)
                 {
                     await RefreshProjects();
                 }
@@ -92,8 +124,11 @@ namespace Workman.Apps.ViewModels
                 projectVOs.Add(new WorkProjectVO
                 {
                     Id = project.Id,
+                    ArchivedTime = project.ArchivedTime,
+                    CreatedTime = project.CreatedTime,
                     OrderId = orderId++,
                     Name = project.Name,
+                    IsArchived = project.IsArchived,
                     ElapsedTime = time,
                     TaskCount = count,
                 });

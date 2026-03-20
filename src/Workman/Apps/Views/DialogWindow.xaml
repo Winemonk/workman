@@ -8,7 +8,7 @@
     Background="Transparent"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
     <WindowChrome.WindowChrome>

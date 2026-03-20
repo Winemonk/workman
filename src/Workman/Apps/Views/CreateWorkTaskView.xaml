@@ -7,61 +7,65 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Width="480"
+    Width="520"
+    Height="360"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label Content="{Binding NewTask, Source={StaticResource LocalizationManager}}" />
-            <DataGrid
-                Height="100"
-                Margin="3"
-                d:ItemsSource="{d:SampleData}"
-                CanUserAddRows="True"
-                CanUserDeleteRows="True"
-                HeadersVisibility="All"
-                ItemsSource="{Binding WorkTasks}">
-                <DataGrid.Resources>
-                    <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding OrderId}"
-                        Header="{Binding IDX, Source={StaticResource LocalizationManager}}"
-                        IsReadOnly="True" />
-                    <DataGridComboBoxColumn
-                        MinWidth="66"
-                        DisplayMemberPath="Name"
-                        Header="{Binding Iteration, Source={StaticResource LocalizationManager}}"
-                        ItemsSource="{Binding DataContext.Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource BindingProxy}}"
-                        SelectedItemBinding="{Binding Project}" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Content}"
-                        Header="{Binding Content, Source={StaticResource LocalizationManager}}" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <DockPanel>
-                <Label>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Enter: " />
-                        <TextBlock Text="{Binding NewRow, Source={StaticResource LocalizationManager}}" />
-                    </StackPanel>
-                </Label>
-                <Label>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Del: " />
-                        <TextBlock Text="{Binding DeleteRow, Source={StaticResource LocalizationManager}}" />
-                    </StackPanel>
-                </Label>
-                <StackPanel
-                    Margin="3"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-                    <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
-                    <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Label Content="{Binding NewTask, Source={StaticResource LocalizationManager}}" />
+        <DataGrid
+            Grid.Row="1"
+            Margin="3"
+            d:ItemsSource="{d:SampleData}"
+            CanUserAddRows="True"
+            CanUserDeleteRows="True"
+            HeadersVisibility="All"
+            ItemsSource="{Binding WorkTasks}">
+            <DataGrid.Resources>
+                <helpers:BindingProxy x:Key="BindingProxy" DataContext="{Binding}" />
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding OrderId}"
+                    Header="{Binding IDX, Source={StaticResource LocalizationManager}}"
+                    IsReadOnly="True" />
+                <DataGridComboBoxColumn
+                    MinWidth="66"
+                    DisplayMemberPath="Name"
+                    Header="{Binding Iteration, Source={StaticResource LocalizationManager}}"
+                    ItemsSource="{Binding DataContext.Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource BindingProxy}}"
+                    SelectedItemBinding="{Binding Project}" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Content}"
+                    Header="{Binding Content, Source={StaticResource LocalizationManager}}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <DockPanel Grid.Row="2">
+            <Label>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Enter: " />
+                    <TextBlock Text="{Binding NewRow, Source={StaticResource LocalizationManager}}" />
                 </StackPanel>
-            </DockPanel>
-        </StackPanel>
+            </Label>
+            <Label>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Del: " />
+                    <TextBlock Text="{Binding DeleteRow, Source={StaticResource LocalizationManager}}" />
+                </StackPanel>
+            </Label>
+            <StackPanel
+                Margin="3"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+                <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -15,17 +15,41 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <ScrollViewer
-            Height="100"
+            Height="180"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
                 <DockPanel Margin="3">
-                    <Label Content="{Binding AutoStartup, Source={StaticResource LocalizationManager}}" />
+                    <Label Width="108" Content="{Binding AutoStartup, Source={StaticResource LocalizationManager}}" />
                     <RibbonCheckBox IsChecked="{Binding Autostart}" />
                 </DockPanel>
                 <DockPanel Margin="3">
-                    <Label Content="{Binding DockMainScreen, Source={StaticResource LocalizationManager}}" />
+                    <Label Width="108" Content="{Binding DockMainScreen, Source={StaticResource LocalizationManager}}" />
                     <RibbonCheckBox IsChecked="{Binding DockOnlyMainScreen}" />
+                </DockPanel>
+                <DockPanel Margin="3">
+                    <Label Width="108" Content="{Binding TurnOnReminder, Source={StaticResource LocalizationManager}}" />
+                    <RibbonCheckBox IsChecked="{Binding TurnOnReminder}" />
+                </DockPanel>
+                <DockPanel Margin="3">
+                    <Label Width="108" Content="{Binding ReminderOfStartTime, Source={StaticResource LocalizationManager}}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox HorizontalContentAlignment="Center" Text="{Binding ReminderStartTimeHour, StringFormat=D2}" />
+                        <Label Grid.Column="1" Content=":" />
+                        <TextBox
+                            Grid.Column="2"
+                            HorizontalContentAlignment="Center"
+                            Text="{Binding ReminderStartTimeMinute, StringFormat=D2}" />
+                    </Grid>
+                </DockPanel>
+                <DockPanel Margin="3">
+                    <Label Width="108" Content="{Binding ReminderInterval, Source={StaticResource LocalizationManager}}" />
+                    <TextBox HorizontalContentAlignment="Center" Text="{Binding ReminderInterval}" />
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>

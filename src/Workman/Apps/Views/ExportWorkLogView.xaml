@@ -6,50 +6,79 @@
     xmlns:local="clr-namespace:Workman.Apps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Width="280"
+    Width="480"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label Content="{Binding ExportLog, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+    <StackPanel Orientation="Vertical">
+        <Label Content="{Binding ExportLog, Source={StaticResource LocalizationManager}}" FontWeight="Bold" />
+        <Label Content="{Binding Iteration, Source={StaticResource LocalizationManager}}" />
+        <ItemsControl
+            Height="100"
+            Margin="3"
+            d:ItemsSource="{d:SampleData}"
+            ItemsSource="{Binding Projects}">
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer
+                        Background="#AAFFFFFF"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="2" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="2">
+                        <CheckBox Content="{Binding}" IsChecked="{Binding IsChecked}" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <UniformGrid>
             <Label Content="{Binding StartDate, Source={StaticResource LocalizationManager}}" />
+            <Label Content="{Binding EndDate, Source={StaticResource LocalizationManager}}" />
             <DatePicker
                 Background="Transparent"
                 BorderThickness="0"
                 DisplayDateEnd="{Binding EndDate}"
                 SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 SelectedDateFormat="Long" />
-            <Label Content="{Binding EndDate, Source={StaticResource LocalizationManager}}" />
             <DatePicker
                 Background="Transparent"
                 BorderThickness="0"
                 DisplayDateStart="{Binding StartDate}"
                 SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 SelectedDateFormat="Long" />
-            <Label Content="{Binding Output, Source={StaticResource LocalizationManager}}" />
-            <DockPanel>
-                <Button
-                    Margin="2"
-                    Command="{Binding SelectOutputCommand}"
-                    DockPanel.Dock="Right">
-                    <Image
-                        Width="16"
-                        Height="16"
-                        Source="/Apps/Resources/folder32.png" />
-                </Button>
-                <TextBox
-                    Margin="2"
-                    VerticalContentAlignment="Center"
-                    IsReadOnly="True"
-                    Text="{Binding Output}" />
-            </DockPanel>
-            <StackPanel
-                Margin="3"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
-                <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
-            </StackPanel>
+        </UniformGrid>
+        <Label Content="{Binding Output, Source={StaticResource LocalizationManager}}" />
+        <DockPanel>
+            <Button
+                Margin="2"
+                Command="{Binding SelectOutputCommand}"
+                DockPanel.Dock="Right">
+                <Image
+                    Width="16"
+                    Height="16"
+                    Source="/Apps/Resources/folder32.png" />
+            </Button>
+            <TextBox
+                Margin="2"
+                VerticalContentAlignment="Center"
+                IsReadOnly="True"
+                Text="{Binding Output}" />
+        </DockPanel>
+        <StackPanel
+            Margin="3"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button Command="{Binding ConfirmCommand}" Content="{Binding Confirm, Source={StaticResource LocalizationManager}}" />
+            <Button Command="{Binding CancelCommand}" Content="{Binding Cancel, Source={StaticResource LocalizationManager}}" />
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

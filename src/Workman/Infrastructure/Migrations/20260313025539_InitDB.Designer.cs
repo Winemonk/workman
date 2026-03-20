@@ -11,8 +11,8 @@ using Workman.Infrastructure.DbContexts;
 namespace Workman.Infrastructure.Migrations
 {
     [DbContext(typeof(WorkmanDbContext))]
-    [Migration("20260309022949_AddContentField")]
-    partial class AddContentField
+    [Migration("20260313025539_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,18 @@ namespace Workman.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
 
+                    b.Property<DateTime?>("ArchivedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_archived_time");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_created_time");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_is_archived");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -74,6 +86,18 @@ namespace Workman.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasColumnName("f_id");
+
+                    b.Property<DateTime?>("ArchivedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_archived_time");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("f_created_time");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("f_is_archived");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -11,6 +11,7 @@ using System.Windows;
 using Workman.Apps.Configs;
 using Workman.Apps.Helpers;
 using Workman.Apps.Views;
+using Workman.Core.Services;
 
 namespace Workman
 {
@@ -31,34 +32,40 @@ namespace Workman
                 Thread.CurrentThread.CurrentCulture = culture;
             }
             // LocalizationCultureHelper.SetCulture("en");
-            var exePath = Process.GetCurrentProcess().MainModule?.FileName;
-            var exeDirectory = Path.GetDirectoryName(exePath);
-            if (!string.IsNullOrEmpty(exeDirectory))
+            if (!Debugger.IsAttached)
             {
-                Directory.SetCurrentDirectory(exeDirectory);
-            }
+                var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+                var exeDirectory = Path.GetDirectoryName(exePath);
+                if (!string.IsNullOrEmpty(exeDirectory))
+                {
+                    Directory.SetCurrentDirectory(exeDirectory);
+                }
 
-            bool createdNew;
-            try
-            {
-                _MUTEX = new Mutex(true, _MUTEX_NAME, out createdNew);
-            }
-            catch (AbandonedMutexException)
-            {
-                createdNew = false;
-            }
+                bool createdNew;
+                try
+                {
+                    _MUTEX = new Mutex(true, _MUTEX_NAME, out createdNew);
+                }
+                catch (AbandonedMutexException)
+                {
+                    createdNew = false;
+                }
 
-            if (!createdNew)
-            {
-                Shutdown();
-                return;
+                if (!createdNew)
+                {
+                    Shutdown();
+                    return;
+                }
             }
+            
             base.OnStartup(e);
         }
 
         protected override Window CreateShell()
         {
             Container.RegisterViewsFromAssembly(Assembly.GetExecutingAssembly());
+            IWinToastService winToastService = Container.Resolve<IWinToastService>();
+            winToastService.OpenTimerNotification();
             return Container.Resolve<MainWindow>();
         }
 
@@ -73,7 +80,7 @@ namespace Workman
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
-            containerRegistry.Config<AppSettings>(configuration);
+            containerRegistry.Config<AppSettings>(configuration.GetSection(nameof(AppSettings)));
         }
     }
 }

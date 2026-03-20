@@ -15,7 +15,10 @@ namespace Workman.Apps.Entities
         private string _content;
 
         [ObservableProperty]
-        private float _elapsedTime;
+        private float _elapsedTime = 1f;
+
+        [ObservableProperty]
+        private DateTime? _date;
 
         [ObservableProperty]
         private bool _isCreated;

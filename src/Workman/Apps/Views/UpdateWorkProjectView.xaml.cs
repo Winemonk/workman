@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Workman.Apps.Views
 {
     /// <summary>
-    /// TaskManageView.xaml 的交互逻辑
+    /// UpdateWorkProjectView.xaml 的交互逻辑
     /// </summary>
-    public partial class TaskManageView : UserControl
+    public partial class UpdateWorkProjectView : UserControl
     {
-        public TaskManageView()
+        public UpdateWorkProjectView()
         {
             InitializeComponent();
         }

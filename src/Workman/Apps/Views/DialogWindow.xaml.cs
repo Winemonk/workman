@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Workman.Apps.Views
 {
@@ -10,6 +11,17 @@ namespace Workman.Apps.Views
         public DialogWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                Result = new DialogResult(ButtonResult.Cancel);
+                Close();
+                e.Handled = true;
+            }
+            base.OnPreviewKeyUp(e);
         }
 
         public IDialogResult Result { get; set; }

@@ -270,4 +270,43 @@
   <data name="str_delete_iteration_hint" xml:space="preserve">
     <value>After the project is deleted, the related logs will also be deleted. Are you sure to delete the project?</value>
   </data>
+  <data name="str_update_iteration" xml:space="preserve">
+    <value>Update Iteration</value>
+  </data>
+  <data name="str_archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="str_log_manage" xml:space="preserve">
+    <value>Log management</value>
+  </data>
+  <data name="str_update_log" xml:space="preserve">
+    <value>Update log</value>
+  </data>
+  <data name="str_update_task" xml:space="preserve">
+    <value>Update task</value>
+  </data>
+  <data name="str_delete_task_hint" xml:space="preserve">
+    <value>After the task is deleted, the related logs will also be deleted. Are you sure to delete the task?</value>
+  </data>
+  <data name="str_delete_log_hint" xml:space="preserve">
+    <value>Are you sure to delete the log?</value>
+  </data>
+  <data name="str_created_time" xml:space="preserve">
+    <value>Created time</value>
+  </data>
+  <data name="str_archived_time" xml:space="preserve">
+    <value>Archived time</value>
+  </data>
+  <data name="str_toast_message" xml:space="preserve">
+    <value>There's no work log for today yet. Remember to record it!</value>
+  </data>
+  <data name="str_turn_on_reminder" xml:space="preserve">
+    <value>Turn on reminder</value>
+  </data>
+  <data name="str_reminder_of_start_time" xml:space="preserve">
+    <value>Reminder of start time</value>
+  </data>
+  <data name="str_reminder_interval" xml:space="preserve">
+    <value>Reminder interval (minutes)</value>
+  </data>
 </root>

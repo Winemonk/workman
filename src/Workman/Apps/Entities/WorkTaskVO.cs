@@ -19,9 +19,18 @@ namespace Workman.Core.Entities
         [ObservableProperty]
         private float _totalElapsedTime;
 
+        [ObservableProperty]
+        private bool _isArchived;
+
+        [ObservableProperty]
+        private DateTime _createdTime;
+
+        [ObservableProperty]
+        private DateTime? _archivedTime;
+
         public override string ToString()
         {
-            return $"{_project?.Name}: {_name}";
+            return $"{Project}: {Name}" + (IsArchived ? "（已归档）" : "");
         }
     }
 }

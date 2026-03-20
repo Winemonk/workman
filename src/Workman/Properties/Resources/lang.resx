@@ -270,4 +270,43 @@
   <data name="str_delete_iteration_hint" xml:space="preserve">
     <value>项目删除后相关日志也会删除，确认删除项目？</value>
   </data>
+  <data name="str_update_iteration" xml:space="preserve">
+    <value>更新迭代</value>
+  </data>
+  <data name="str_archive" xml:space="preserve">
+    <value>归档</value>
+  </data>
+  <data name="str_log_manage" xml:space="preserve">
+    <value>日志管理</value>
+  </data>
+  <data name="str_update_log" xml:space="preserve">
+    <value>更新日志</value>
+  </data>
+  <data name="str_update_task" xml:space="preserve">
+    <value>更新任务</value>
+  </data>
+  <data name="str_delete_task_hint" xml:space="preserve">
+    <value>任务删除后相关日志也会删除，确认删除任务？</value>
+  </data>
+  <data name="str_delete_log_hint" xml:space="preserve">
+    <value>确认删除日志？</value>
+  </data>
+  <data name="str_created_time" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="str_archived_time" xml:space="preserve">
+    <value>归档时间</value>
+  </data>
+  <data name="str_toast_message" xml:space="preserve">
+    <value>今天还没有工作日志，记得记录哦！</value>
+  </data>
+  <data name="str_turn_on_reminder" xml:space="preserve">
+    <value>开启提醒</value>
+  </data>
+  <data name="str_reminder_of_start_time" xml:space="preserve">
+    <value>提醒开始时间</value>
+  </data>
+  <data name="str_reminder_interval" xml:space="preserve">
+    <value>提醒间隔（分钟）</value>
+  </data>
 </root>

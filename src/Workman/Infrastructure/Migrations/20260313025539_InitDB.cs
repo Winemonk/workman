@@ -17,7 +17,10 @@ namespace Workman.Infrastructure.Migrations
                 {
                     f_id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    f_name = table.Column<string>(type: "TEXT", nullable: false)
+                    f_name = table.Column<string>(type: "TEXT", nullable: false),
+                    f_is_archived = table.Column<bool>(type: "INTEGER", nullable: false),
+                    f_created_time = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    f_archived_time = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -31,7 +34,10 @@ namespace Workman.Infrastructure.Migrations
                     f_id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     f_project_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    f_content = table.Column<string>(type: "TEXT", nullable: false)
+                    f_name = table.Column<string>(type: "TEXT", nullable: false),
+                    f_is_archived = table.Column<bool>(type: "INTEGER", nullable: false),
+                    f_created_time = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    f_archived_time = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,6 +57,7 @@ namespace Workman.Infrastructure.Migrations
                     f_id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     f_task_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    f_content = table.Column<string>(type: "TEXT", nullable: false),
                     f_date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     f_elapsed_time = table.Column<float>(type: "REAL", nullable: false)
                 },

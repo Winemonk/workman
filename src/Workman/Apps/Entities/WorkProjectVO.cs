@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Workman.Core.Entities
 {
@@ -18,5 +19,19 @@ namespace Workman.Core.Entities
 
         [ObservableProperty]
         private float _elapsedTime;
+
+        [ObservableProperty]
+        private bool _isArchived;
+
+        [ObservableProperty]
+        private DateTime _createdTime;
+
+        [ObservableProperty]
+        private DateTime? _archivedTime;
+
+        public override string ToString()
+        {
+            return Name + (IsArchived ? $"（已归档）" : "");
+        }
     }
 }
