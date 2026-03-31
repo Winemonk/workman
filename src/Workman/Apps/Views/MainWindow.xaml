@@ -112,6 +112,7 @@
             <DatePicker
                 Background="Transparent"
                 BorderThickness="0"
+                CalendarStyle="{StaticResource LogCalendarStyle}"
                 SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 SelectedDateFormat="Long" />
             <UniformGrid Rows="2">

@@ -22,6 +22,8 @@ namespace Workman.Core.Services
 
         Task<List<WorkLog>> GetLogs(DateTime date);
 
+        bool TheDayHasLogs(DateTime date);
+
         Task<List<WorkLog>> GetLogs(DateTime startDate, DateTime endDate);
 
         Task<WorkProject?> GetProject(int projectId);

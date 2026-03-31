@@ -12,6 +12,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <helpers:DateTimeToLongDateStringConverter x:Key="DateTimeToLongDateStringConverter" />
             <helpers:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter" />
+            <helpers:CalendarDayButtonBrushConverter x:Key="CalendarDayButtonBrushConverter" />
             <Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -51,6 +52,68 @@
             </Style>
             <Style TargetType="Label">
                 <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="LogCalendarStyle" TargetType="Calendar">
+                <Setter Property="CalendarDayButtonStyle">
+                    <Setter.Value>
+                        <Style TargetType="CalendarDayButton">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Background" Value="{Binding ., Converter={StaticResource CalendarDayButtonBrushConverter}, ConverterParameter=Background}" />
+                            <Setter Property="Foreground" Value="{Binding ., Converter={StaticResource CalendarDayButtonBrushConverter}, ConverterParameter=Foreground}" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Margin" Value="1" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="FontSize" Value="15" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="CalendarDayButton">
+                                        <Border
+                                            Margin="{TemplateBinding Margin}"
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="8">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <!--  今天的日期  -->
+                                <Trigger Property="IsToday" Value="True">
+                                    <Setter Property="Foreground" Value="#0078D7" />
+                                </Trigger>
+                                <!--  选中的日期  -->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#0078D7" />
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                                <!--  非当前月份的日期 (Inactive)  -->
+                                <Trigger Property="IsInactive" Value="True">
+                                    <Setter Property="FontSize" Value="11" />
+                                    <Setter Property="Margin" Value="4" />
+                                    <Setter Property="Padding" Value="2" />
+                                </Trigger>
+                                <!--  被禁用的日期 (Blackout)  -->
+                                <Trigger Property="IsBlackedOut" Value="True">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="#999999" />
+                                    <Setter Property="FontSize" Value="11" />
+                                </Trigger>
+                                <!--  鼠标悬停状态  -->
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E5F3FF" />
+                                    <Setter Property="Foreground" Value="#0078D7" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ResourceDictionary>
     </prism:PrismApplication.Resources>

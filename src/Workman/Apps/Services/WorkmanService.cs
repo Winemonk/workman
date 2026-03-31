@@ -225,5 +225,11 @@ namespace Workman.Apps.Services
             await _taskRepository.Update(workTask);
             return workTask;
         }
+
+        public bool TheDayHasLogs(DateTime date)
+        {
+            IEnumerable<WorkLog> workLogs = _logRepository.QueryRange(q => q.Where(l => l.Date >= date && l.Date < date.AddDays(1))).Result;
+            return workLogs.Any();
+        }
     }
 }

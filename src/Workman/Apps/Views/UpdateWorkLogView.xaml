@@ -17,6 +17,7 @@
                 Margin="3"
                 Background="Transparent"
                 BorderThickness="0"
+                CalendarStyle="{StaticResource LogCalendarStyle}"
                 SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedDateFormat="Long" />
             <Label Content="{Binding Task, Source={StaticResource LocalizationManager}}" />
